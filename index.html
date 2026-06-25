@@ -39,7 +39,6 @@
     justify-content: space-between;
     padding: 0 48px;
     z-index: 1000;
-    /* border-bottom REMOVED – nav overloopt in pagina op desktop */
     transition: box-shadow 0.3s;
   }
   nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
@@ -162,20 +161,23 @@
     .page { padding-top: 0; }
   }
 
-  /* ── SCROLL REVEAL ── */
+  /* ── NIEUWE SCROLL REVEAL ANIMATIE ── */
   .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.215, 0.610, 0.355, 1), transform 0.9s cubic-bezier(0.215, 0.610, 0.355, 1);
+    will-change: transform, opacity;
   }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   /* ══════════════════════════════
      HOME
   ══════════════════════════════ */
   #home { padding-top: var(--nav-height); background: var(--white); }
 
-  /* Intro blokken */
   .home-intro {
     padding: 60px 60px 0;
     background: var(--white);
@@ -221,7 +223,6 @@
     margin-bottom: 16px;
   }
 
-  /* Scheidingslijn */
   .home-divider {
     display: flex;
     justify-content: center;
@@ -234,7 +235,6 @@
     background: var(--black);
   }
 
-  /* Projecten sectie op home */
   .home-projects {
     padding: 0 60px 60px;
     background: var(--white);
@@ -330,7 +330,6 @@
   }
   .page-header h2 span { color: var(--accent); font-style: italic; }
 
-  /* Projecten pagina: 2 foto's naast elkaar met witte strook */
   .projects-overview {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -418,12 +417,9 @@
   }
   .project-category:hover .project-category-label p::after { transform: translateX(6px); }
 
-  /* ── FOTO GRID (Nieuwbouw / Renovatie) ── */
+  /* ── FOTO GRID ── */
   .photo-grid-page .page-header { margin-bottom: 0; }
 
-  /* back-btn VERWIJDERD per punt 5 */
-
-  /* 2 per rij op desktop */
   .photo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -444,22 +440,18 @@
     background-size: cover;
     background-position: center;
     transition: transform 0.5s var(--transition);
-    /* Geen donker worden: overlay regelt alleen glow, geen verduistering */
   }
-  /* hover: GEEN schaal op bg → geen donker effect, wel glow via ::after */
   .photo-item:hover .photo-item-bg { transform: scale(1.03); }
 
   .photo-item-overlay {
     position: absolute;
     inset: 0;
-    /* Roze/paarse gloed bij hover, geen donkere overlay */
     background: rgba(0,0,0,0);
     transition: background 0.4s;
     display: flex;
     align-items: flex-end;
     padding: 20px;
   }
-  /* Geen zwart bij hover – enkel roze gloed via box-shadow */
   .photo-item:hover .photo-item-overlay { background: rgba(192,132,160,0.18); }
   .photo-item::after {
     content: '';
@@ -497,7 +489,6 @@
     margin-top: 2px;
   }
 
-  /* Placeholders */
   .ph-1 { background-color: #c8c8c8; }
   .ph-2 { background-color: #d4d4d4; }
   .ph-3 { background-color: #b8b8b8; }
@@ -509,7 +500,7 @@
   .ph-9 { background-color: #d0d0d0; }
 
   /* ══════════════════════════════
-     PROJECT VIEWER (volledig wit, inline pagina)
+     PROJECT VIEWER
   ══════════════════════════════ */
   .project-viewer {
     display: none;
@@ -525,7 +516,6 @@
     padding: 48px 60px 60px;
   }
 
-  /* Terug-knop bovenaan */
   .viewer-back-top {
     display: inline-flex;
     align-items: center;
@@ -571,14 +561,12 @@
     background: var(--black);
   }
 
-  /* Layout: strip links, grote foto rechts */
   .viewer-content-layout {
     display: flex;
     gap: 24px;
     align-items: flex-start;
   }
 
-  /* Thumbnail strip */
   .viewer-strip {
     width: 120px;
     flex-shrink: 0;
@@ -630,7 +618,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* Grote foto rechts */
   .viewer-main-area {
     flex: 1;
     display: flex;
@@ -663,7 +650,6 @@
     text-transform: uppercase;
   }
 
-  /* Pijlen onder de foto */
   .viewer-arrows {
     display: flex;
     align-items: center;
@@ -847,9 +833,7 @@
   .submit-btn:hover { background: var(--accent); gap: 18px; }
   .submit-btn::after { content: '→'; }
 
-  /* ══════════════════════════════
-     FOOTER – OVERAL WIT
-  ══════════════════════════════ */
+  /* ── FOOTER ── */
   footer {
     background: var(--white);
     color: #666;
@@ -879,7 +863,6 @@
   footer .footer-social a:hover { color: var(--accent); }
   footer .footer-social svg { width: 22px; height: 22px; }
 
-  /* ── ANIMATIONS ── */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -980,7 +963,6 @@
 
     footer { padding: 24px 20px; }
 
-    /* Viewer op mobiel */
     .viewer-page-wrap { padding: 24px 16px 40px; }
     .viewer-content-layout { flex-direction: column; }
     .viewer-strip { width: 100%; max-height: none; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
@@ -1034,9 +1016,7 @@
   </div>
 </nav>
 
-<!-- ════════════ HOME ════════════ -->
 <div id="home" class="page active">
-  <!-- Rij 1: foto links, tekst rechts -->
   <div class="home-intro">
     <div class="home-row reveal">
       <div class="home-row-img">
@@ -1046,14 +1026,13 @@
       <div class="home-row-text">
         <h2>Architectuur<br>met <em>karakter</em></h2>
         <p>Architectenbureau Annelies Paulussen bvba is een gepassioneerd architectenbureau dat maatwerk levert voor zowel particulieren als bedrijven.</p>
-        <p>Van het eerste gesprek tot de oplevering begeleidt Annelies u stap voor stap, met oog voor detail, duurzaamheid en uw persoonlijke stijl.</p>
+        <p>Van het eerste gesprek tot de oplevering begeleidt Annelies u stap voor stap, met oog voor detail, duurzaamheid hives en uw persoonlijke stijl.</p>
       </div>
     </div>
   </div>
 
   <div class="home-divider"><span></span></div>
 
-  <!-- Rij 2: tekst links, foto rechts -->
   <div class="home-intro">
     <div class="home-row reverse reveal">
       <div class="home-row-img">
@@ -1070,12 +1049,10 @@
 
   <div class="home-divider"><span></span></div>
 
-  <!-- Projecten sectie -->
   <div class="home-projects">
     <h2 class="home-projects-title reveal"><em>Projecten</em></h2>
     <div class="home-projects-grid" id="homeProjectsGrid">
-      <!-- Dynamisch ingevuld -->
-    </div>
+      </div>
     <div class="home-meer-btn">
       <button onclick="showPage('projecten')">Meer projecten</button>
     </div>
@@ -1104,13 +1081,12 @@
   </footer>
 </div>
 
-<!-- ════════════ PROJECTEN ════════════ -->
 <div id="projecten" class="page">
   <div class="page-header reveal">
     <h2><em>Projecten</em></h2>
   </div>
   <div class="projects-overview">
-    <div class="project-category" onclick="showPage('nieuwbouw')">
+    <div class="project-category reveal" style="transition-delay: 0.1s;">
       <div class="project-category-bg cat-nieuwbouw"></div>
       <div class="project-category-overlay"></div>
       <div class="project-category-label">
@@ -1118,7 +1094,7 @@
         <p>Ontdek projecten</p>
       </div>
     </div>
-    <div class="project-category" onclick="showPage('renovatie')">
+    <div class="project-category reveal" style="transition-delay: 0.2s;">
       <div class="project-category-bg cat-renovatie"></div>
       <div class="project-category-overlay"></div>
       <div class="project-category-label">
@@ -1148,7 +1124,6 @@
   </footer>
 </div>
 
-<!-- ════════════ NIEUWBOUW ════════════ -->
 <div id="nieuwbouw" class="page photo-grid-page">
   <div class="page-header reveal">
     <h2><em>Nieuwbouw</em></h2>
@@ -1175,7 +1150,6 @@
   </footer>
 </div>
 
-<!-- ════════════ RENOVATIE ════════════ -->
 <div id="renovatie" class="page photo-grid-page">
   <div class="page-header reveal">
     <h2><em>Renovatie</em></h2>
@@ -1202,7 +1176,6 @@
   </footer>
 </div>
 
-<!-- ════════════ BUREAU ════════════ -->
 <div id="bureau" class="page">
   <div class="bureau-content">
     <div class="bureau-text">
@@ -1259,7 +1232,6 @@
   </footer>
 </div>
 
-<!-- ════════════ CONTACT ════════════ -->
 <div id="contact" class="page">
   <div class="contact-layout">
     <div class="contact-info">
@@ -1330,7 +1302,6 @@
   </footer>
 </div>
 
-<!-- ════════════ PROJECT VIEWER (inline pagina) ════════════ -->
 <div class="project-viewer" id="projectViewer">
   <div class="viewer-page-wrap">
     <button class="viewer-back-top" id="viewerBackTop" onclick="closeViewer()">Terug naar nieuwbouw</button>
@@ -1339,10 +1310,8 @@
     <div class="viewer-page-divider"><span></span></div>
 
     <div class="viewer-content-layout">
-      <!-- Thumbnail strip links -->
       <div class="viewer-strip" id="viewerStrip"></div>
 
-      <!-- Grote foto rechts -->
       <div class="viewer-main-area">
         <div class="viewer-img-wrap" id="viewerImgWrap">
           <div class="viewer-img-placeholder" id="viewerImgPlaceholder">
@@ -1400,12 +1369,10 @@ const renovatieProjecten = [
     images: ['images/renovatie/MAPNAAM/MAPNAAM-1.jpg','images/renovatie/MAPNAAM/MAPNAAM-2.jpg','images/renovatie/MAPNAAM/MAPNAAM-3.jpg','images/renovatie/MAPNAAM/MAPNAAM-4.jpg','images/renovatie/MAPNAAM/MAPNAAM-5.jpg','images/renovatie/MAPNAAM/MAPNAAM-6.jpg','images/renovatie/MAPNAAM/MAPNAAM-7.jpg'] },
 ];
 
-// ── Viewer state ──
 let currentProject = null;
 let currentPhotoIndex = 0;
 let viewerSourcePage = 'nieuwbouw';
 
-// ── Build thumbnail strip ──
 function buildViewerStrip(project) {
   const strip = document.getElementById('viewerStrip');
   strip.innerHTML = '';
@@ -1438,7 +1405,6 @@ function buildViewerStrip(project) {
   }
 }
 
-// ── Update main image ──
 function updateViewerMain() {
   const project = currentProject;
   const i = currentPhotoIndex;
@@ -1469,13 +1435,11 @@ function updateViewerMain() {
   if (activeThumb) activeThumb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
-// ── Open viewer ──
 function openViewer(project, sourcePage) {
   currentProject = project;
   currentPhotoIndex = 0;
   viewerSourcePage = sourcePage || 'nieuwbouw';
 
-  // Update terug-knop tekst
   const backBtn = document.getElementById('viewerBackTop');
   if (sourcePage === 'renovatie') {
     backBtn.textContent = '← Terug naar renovatie';
@@ -1484,7 +1448,6 @@ function openViewer(project, sourcePage) {
   } else {
     backBtn.textContent = '← Terug naar projecten';
   }
-  // Reset ::before content trick - use direct text
   backBtn.style.paddingLeft = '0';
 
   document.getElementById('viewerTitle').textContent = project.naam;
@@ -1493,7 +1456,6 @@ function openViewer(project, sourcePage) {
   buildViewerStrip(project);
   updateViewerMain();
 
-  // Verberg alle pagina's, toon de viewer als een pagina
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const viewer = document.getElementById('projectViewer');
   viewer.classList.add('open');
@@ -1525,7 +1487,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeViewer();
 });
 
-// ── Render photo grids ──
 function renderGrid(containerId, projecten, sourcePage) {
   const grid = document.getElementById(containerId);
   grid.innerHTML = '';
@@ -1549,20 +1510,23 @@ function renderGrid(containerId, projecten, sourcePage) {
     `;
     item.addEventListener('click', () => openViewer(p, sourcePage));
     grid.appendChild(item);
-    setTimeout(() => item.classList.add('visible'), 100 + i * 60);
   });
+  // Kleine vertraging voor de initiële trigger
+  setTimeout(initReveal, 50);
 }
 
-// ── Render home projects (4 stuks, mix nieuwbouw + renovatie) ──
+// ── RENDER MET STAGGER TIMING OP HOME ──
 function renderHomeProjects() {
   const grid = document.getElementById('homeProjectsGrid');
   grid.innerHTML = '';
-  // Toon enkel projecten met home: true
   const selection = [...nieuwbouwProjecten, ...renovatieProjecten].filter(p => p.home === true);
   selection.forEach((p, i) => {
     const sourcePage = nieuwbouwProjecten.includes(p) ? 'nieuwbouw' : 'renovatie';
     const card = document.createElement('div');
     card.className = 'home-project-card reveal';
+    // Dynamisch overvloeiende inline delay toevoegen voor het stagger effect
+    card.style.transitionDelay = (i * 0.12) + 's';
+    
     const coverSrc = p.images && p.images[0] ? p.images[0] : null;
     card.innerHTML = `
       <div class="home-project-card-img">
@@ -1578,11 +1542,10 @@ function renderHomeProjects() {
     `;
     card.addEventListener('click', () => openViewer(p, sourcePage));
     grid.appendChild(card);
-    setTimeout(() => card.classList.add('visible'), 100 + i * 80);
   });
+  setTimeout(initReveal, 50);
 }
 
-// ── Mobile nav ──
 function toggleMobileNav() {
   const nav = document.getElementById('mobileNav');
   const btn = document.getElementById('hamburger');
@@ -1595,7 +1558,6 @@ function closeMobileNav() {
   document.getElementById('hamburger').classList.remove('open');
 }
 
-// ── Page switching ──
 function showPage(id) {
   document.getElementById('projectViewer').classList.remove('open');
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1605,31 +1567,40 @@ function showPage(id) {
     window.scrollTo(0, 0);
   }
   closeMobileNav();
-  setTimeout(initReveal, 50);
   if (id === 'nieuwbouw') renderGrid('nieuwbouwGrid', nieuwbouwProjecten, 'nieuwbouw');
   if (id === 'renovatie') renderGrid('renovatieGrid', renovatieProjecten, 'renovatie');
   if (id === 'home') renderHomeProjects();
+  setTimeout(initReveal, 100);
 }
 
-// ── Scroll reveal ──
+// ── VLOEIDERE SCROLL REVEAL LOGICA ──
 function initReveal() {
   const reveals = document.querySelectorAll('.page.active .reveal, .project-viewer.open .reveal');
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
+    entries.forEach(e => { 
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Zodra het element zichtbaar is geworden, kan het observeren stoppen
+        observer.unobserve(e.target);
+      } 
+    });
+  }, { threshold: 0.1 });
+  
   reveals.forEach(el => observer.observe(el));
+  
+  // Direct laden voor elementen die al in de viewport staan
   reveals.forEach(el => {
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.9) el.classList.add('visible');
+    if (rect.top < window.innerHeight) {
+      el.classList.add('visible');
+    }
   });
 }
 
-// ── Navbar scroll ──
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
 });
 
-// ── Contact form ──
 async function submitForm() {
   const naam = document.getElementById('cNaam').value.trim();
   const email = document.getElementById('cEmail').value.trim();
@@ -1662,7 +1633,6 @@ async function submitForm() {
   }
 }
 
-// ── Fix viewer back button (remove ::before, use text directly) ──
 (function patchViewerBack() {
   const btn = document.getElementById('viewerBackTop');
   if (btn) {
@@ -1672,7 +1642,7 @@ async function submitForm() {
 
 // ── Init ──
 renderHomeProjects();
-initReveal();
+setTimeout(initReveal, 150);
 </script>
 </body>
 </html>
