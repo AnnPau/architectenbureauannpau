@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Annelies Paulussen – Architectenbureau bvba</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --black: #111111;
+    --accent: #c084a0;
+    --accent-dark: #9b5e7a;
+    --accent-light: #f0d6e4;
+    --grey: #f5f5f5;
+    --grey-mid: #e0e0e0;
+    --text-light: #888;
+    --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --nav-height: 80px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-height);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 1000;
+    /* border-bottom REMOVED – nav overloopt in pagina op desktop */
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+
+  @media (max-width: 768px) {
+    nav {
+      position: relative;
+      top: auto; left: auto; right: auto;
+      padding: 0 20px;
+      z-index: auto;
+      border-bottom: 1px solid var(--grey-mid);
+    }
+  }
+
+  .logo {
+    height: 48px;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links > li { position: relative; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 0;
+    position: relative;
+    transition: color var(--transition);
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width var(--transition);
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--white);
+    border: 1px solid var(--grey-mid);
+    min-width: 160px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .dropdown::before {
+    content: '';
+    position: absolute;
+    top: -16px;
+    left: 0;
+    width: 100%;
+    height: 16px;
+  }
+  .nav-links > li {
+    position: relative;
+    padding-bottom: 12px;
+  }
+  .nav-links li:hover .dropdown {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .dropdown a {
+    display: block;
+    padding: 12px 20px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    border-bottom: 1px solid var(--grey);
+    transition: color var(--transition), background var(--transition);
+  }
+  .dropdown a:last-child { border-bottom: none; }
+  .dropdown a::after { display: none; }
+  .dropdown a:hover { background: var(--accent-light); color: var(--accent-dark); }
+
+  /* ── Hamburger ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .hamburger span {
+    display: block;
+    height: 2px;
+    background: var(--black);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+  .mobile-nav-backdrop { display: none; }
+  .mobile-nav { display: none; }
+
+  /* ── PAGES ── */
+  .page { display: none; min-height: 100vh; padding-top: var(--nav-height); }
+  .page.active { display: block; }
+  @media (max-width: 768px) {
+    .page { padding-top: 0; }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ══════════════════════════════
+     HOME
+  ══════════════════════════════ */
+  #home { padding-top: var(--nav-height); background: var(--white); }
+
+  /* Intro blokken */
+  .home-intro {
+    padding: 60px 60px 0;
+    background: var(--white);
+  }
+
+  .home-row {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 0;
+  }
+  .home-row.reverse { flex-direction: row-reverse; }
+
+  .home-row-img {
+    flex: 0 0 48%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: var(--grey);
+  }
+  .home-row-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .home-row-text {
+    flex: 1;
+    padding: 20px 0;
+  }
+  .home-row-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .home-row-text h2 em { color: var(--accent); font-style: italic; }
+  .home-row-text p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #555;
+    margin-bottom: 16px;
+  }
+
+  /* Scheidingslijn */
+  .home-divider {
+    display: flex;
+    justify-content: center;
+    margin: 48px 0;
+  }
+  .home-divider span {
+    display: block;
+    width: 80px;
+    height: 1px;
+    background: var(--black);
+  }
+
+  /* Projecten sectie op home */
+  .home-projects {
+    padding: 0 60px 60px;
+    background: var(--white);
+  }
+  .home-projects-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .home-projects-title em { color: var(--accent); font-style: italic; }
+
+  .home-projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    max-width: 960px;
+    margin: 0 auto 40px;
+  }
+
+  .home-project-card {
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background: var(--grey);
+  }
+  .home-project-card-img {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: var(--grey);
+    position: relative;
+  }
+  .home-project-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s var(--transition);
+  }
+  .home-project-card:hover .home-project-card-img img { transform: scale(1.05); }
+  .home-project-card-label {
+    padding: 14px 0 4px;
+  }
+  .home-project-card-label h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+  .home-project-card-label p {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+
+  .home-meer-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .home-meer-btn button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--black);
+    color: white;
+    border: none;
+    padding: 14px 36px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s, gap 0.3s;
+  }
+  .home-meer-btn button:hover { background: var(--accent); gap: 18px; }
+  .home-meer-btn button::after { content: '→'; }
+
+  /* ══════════════════════════════
+     PROJECTEN OVERZICHT
+  ══════════════════════════════ */
+  .page-header {
+    padding: 60px 60px 40px;
+    text-align: center;
+  }
+  .page-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    letter-spacing: -1px;
+  }
+  .page-header h2 span { color: var(--accent); font-style: italic; }
+
+  /* Projecten pagina: 2 foto's naast elkaar met witte strook */
+  .projects-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0 60px 60px;
+    background: var(--white);
+  }
+
+  .project-category {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: #1a1a1a;
+    aspect-ratio: 3/2;
+    margin: 0 20px;
+  }
+  .project-category-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .cat-nieuwbouw {
+    background-image: url('images/cat-nieuwbouw.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: #3a3a3a;
+  }
+  .cat-renovatie {
+    background-image: url('images/cat-renovatie.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: #2e2e2e;
+  }
+  .project-category:hover .project-category-bg { transform: scale(1.04); }
+
+  .project-category-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+    transition: background 0.4s;
+  }
+  .project-category:hover .project-category-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.1) 100%);
+  }
+  .project-category::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 0 var(--accent);
+    transition: box-shadow 0.35s ease;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .project-category:hover::after {
+    box-shadow: inset 0 0 0 3px var(--accent), 0 0 30px rgba(192,132,160,0.25);
+  }
+
+  .project-category-label {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    color: white;
+    z-index: 2;
+  }
+  .project-category-label h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+  }
+  .project-category-label p {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .project-category-label p::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+  .project-category:hover .project-category-label p::after { transform: translateX(6px); }
+
+  /* ── FOTO GRID (Nieuwbouw / Renovatie) ── */
+  .photo-grid-page .page-header { margin-bottom: 0; }
+
+  /* back-btn VERWIJDERD per punt 5 */
+
+  /* 2 per rij op desktop */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 0 60px 60px;
+  }
+
+  .photo-item {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    cursor: pointer;
+    background: #e8e8e8;
+  }
+
+  .photo-item-bg {
+    width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s var(--transition);
+    /* Geen donker worden: overlay regelt alleen glow, geen verduistering */
+  }
+  /* hover: GEEN schaal op bg → geen donker effect, wel glow via ::after */
+  .photo-item:hover .photo-item-bg { transform: scale(1.03); }
+
+  .photo-item-overlay {
+    position: absolute;
+    inset: 0;
+    /* Roze/paarse gloed bij hover, geen donkere overlay */
+    background: rgba(0,0,0,0);
+    transition: background 0.4s;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+  }
+  /* Geen zwart bij hover – enkel roze gloed via box-shadow */
+  .photo-item:hover .photo-item-overlay { background: rgba(192,132,160,0.18); }
+  .photo-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 0 var(--accent);
+    transition: box-shadow 0.35s ease;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .photo-item:hover::after {
+    box-shadow: inset 0 0 0 3px var(--accent), 0 0 30px rgba(192,132,160,0.5);
+  }
+
+  .photo-item-label {
+    color: white;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 4;
+    position: relative;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+  }
+  .photo-item:hover .photo-item-label { opacity: 1; transform: translateY(0); }
+  .photo-item-label h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+  }
+  .photo-item-label p {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-top: 2px;
+  }
+
+  /* Placeholders */
+  .ph-1 { background-color: #c8c8c8; }
+  .ph-2 { background-color: #d4d4d4; }
+  .ph-3 { background-color: #b8b8b8; }
+  .ph-4 { background-color: #cfcfcf; }
+  .ph-5 { background-color: #c0c0c0; }
+  .ph-6 { background-color: #d8d8d8; }
+  .ph-7 { background-color: #bdbdbd; }
+  .ph-8 { background-color: #cacaca; }
+  .ph-9 { background-color: #d0d0d0; }
+
+  /* ══════════════════════════════
+     PROJECT VIEWER (volledig wit, inline pagina)
+  ══════════════════════════════ */
+  .project-viewer {
+    display: none;
+    background: var(--white);
+    min-height: calc(100vh - var(--nav-height));
+    padding-top: var(--nav-height);
+  }
+  .project-viewer.open { display: block; }
+
+  .viewer-page-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 60px 60px;
+  }
+
+  /* Terug-knop bovenaan */
+  .viewer-back-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin-bottom: 36px;
+    transition: color 0.25s;
+    padding: 0;
+  }
+  .viewer-back-top:hover { color: var(--accent); }
+  .viewer-back-top::before { content: '←'; font-size: 14px; margin-right: 2px; }
+
+  .viewer-page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 46px;
+    font-weight: 300;
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+  .viewer-page-loc {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    text-align: center;
+    margin-top: 6px;
+  }
+  .viewer-page-divider {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 36px;
+  }
+  .viewer-page-divider span {
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: var(--black);
+  }
+
+  /* Layout: strip links, grote foto rechts */
+  .viewer-content-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  /* Thumbnail strip */
+  .viewer-strip {
+    width: 120px;
+    flex-shrink: 0;
+    max-height: 600px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--grey-mid) transparent;
+  }
+  .viewer-strip::-webkit-scrollbar { width: 4px; }
+  .viewer-strip::-webkit-scrollbar-track { background: transparent; }
+  .viewer-strip::-webkit-scrollbar-thumb { background: var(--grey-mid); border-radius: 2px; }
+
+  .viewer-thumb {
+    position: relative;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    background: var(--grey);
+  }
+  .viewer-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .viewer-thumb-placeholder {
+    width: 100%; height: 100%;
+    background: var(--grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    font-size: 9px;
+  }
+  .viewer-thumb.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 14px rgba(192,132,160,0.55);
+  }
+  .viewer-thumb-num {
+    position: absolute;
+    bottom: 4px; right: 6px;
+    font-size: 9px;
+    color: rgba(0,0,0,0.35);
+    letter-spacing: 0.5px;
+  }
+
+  /* Grote foto rechts */
+  .viewer-main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .viewer-img-wrap {
+    position: relative;
+    background: var(--grey);
+    overflow: hidden;
+  }
+  .viewer-img {
+    width: 100%;
+    max-height: 600px;
+    object-fit: contain;
+    display: block;
+  }
+  .viewer-img-placeholder {
+    width: 100%;
+    aspect-ratio: 16/10;
+    background: var(--grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--text-light);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Pijlen onder de foto */
+  .viewer-arrows {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+  .viewer-arrow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--grey-mid);
+    color: var(--black);
+    padding: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.25s, color 0.25s, background 0.25s;
+  }
+  .viewer-arrow-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .viewer-counter {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-light);
+  }
+
+  /* ══════════════════════════════
+     BUREAU
+  ══════════════════════════════ */
+  .bureau-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: calc(100vh - var(--nav-height));
+  }
+  .bureau-text {
+    padding: 80px 60px;
+    border-right: 1px solid var(--grey-mid);
+  }
+  .bureau-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 40px;
+    line-height: 1.1;
+  }
+  .bureau-text h2 em { color: var(--accent); font-style: italic; }
+  .bureau-text p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #444;
+    margin-bottom: 24px;
+  }
+  .bureau-text .lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--black);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .bureau-aside {
+    padding: 80px 60px;
+    background: var(--grey);
+  }
+  .info-block { margin-bottom: 48px; }
+  .info-block h4 {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--accent-light);
+  }
+  .info-block p { font-size: 13px; line-height: 1.8; color: #555; }
+  .diensten-list { list-style: none; }
+  .diensten-list li {
+    font-size: 13px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--grey-mid);
+    display: flex; align-items: center; gap: 10px;
+    color: #444;
+  }
+  .diensten-list li::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════
+     CONTACT
+  ══════════════════════════════ */
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - var(--nav-height));
+  }
+  .contact-info {
+    padding: 80px 60px;
+    background: var(--grey);
+  }
+  .contact-info h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 50px;
+    line-height: 1.1;
+  }
+  .contact-info h2 em { color: var(--accent); font-style: italic; }
+  .contact-detail { margin-bottom: 36px; }
+  .contact-detail h4 {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .contact-detail p, .contact-detail a {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #444;
+    text-decoration: none;
+    display: block;
+    transition: color 0.3s;
+  }
+  .contact-detail a:hover { color: var(--accent); }
+  .contact-form-wrap { padding: 80px 60px; }
+  .contact-form-wrap h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+  .form-group { margin-bottom: 28px; }
+  .form-group label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--grey-mid);
+    background: transparent;
+    padding: 10px 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: var(--black);
+    outline: none;
+    transition: border-color 0.3s;
+    resize: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--accent); }
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--black);
+    color: white;
+    border: none;
+    padding: 16px 36px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s, gap 0.3s;
+    margin-top: 8px;
+  }
+  .submit-btn:hover { background: var(--accent); gap: 18px; }
+  .submit-btn::after { content: '→'; }
+
+  /* ══════════════════════════════
+     FOOTER – OVERAL WIT
+  ══════════════════════════════ */
+  footer {
+    background: var(--white);
+    color: #666;
+    padding: 36px 60px;
+    border-top: 1px solid var(--grey-mid);
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+  footer .footer-address { margin-bottom: 16px; }
+  footer .footer-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 8px;
+  }
+  footer .footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.3s;
+    text-decoration: none;
+  }
+  footer .footer-social a:hover { color: var(--accent); }
+  footer .footer-social svg { width: 22px; height: 22px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .stagger > * { opacity: 0; animation: fadeInUp 0.6s forwards; }
+  .stagger > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.5s; }
+
+  .form-success { display: none; text-align: center; padding: 40px; }
+  .form-success.show { display: block; }
+  .form-success h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  /* ══════════════════════════════
+     MOBILE  (≤ 768px)
+  ══════════════════════════════ */
+  @media (max-width: 768px) {
+    .nav-links { display: none !important; }
+    .hamburger { display: flex; }
+
+    .mobile-nav {
+      display: block;
+      width: 100%;
+      background: var(--white);
+      border-top: 2px solid var(--accent-light);
+      border-bottom: 2px solid var(--accent-light);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+      overflow: hidden;
+      height: 0;
+      transition: height 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .mobile-nav.open { height: 348px; }
+
+    .mobile-nav-links { display: flex; flex-direction: column; }
+    .mobile-nav-links .mn-link {
+      display: block;
+      text-decoration: none;
+      color: var(--black);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 18px 28px;
+      border-bottom: 1px solid var(--grey-mid);
+      transition: color 0.2s, background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-nav-links .mn-link:active { color: var(--accent); background: var(--accent-light); }
+    .mobile-nav-links .mn-sub {
+      display: block;
+      text-decoration: none;
+      color: #999;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 14px 28px 14px 52px;
+      border-bottom: 1px solid var(--grey-mid);
+      transition: color 0.2s, background 0.2s;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-nav-links .mn-sub::before {
+      content: '';
+      position: absolute;
+      left: 32px; top: 50%;
+      transform: translateY(-50%);
+      width: 10px; height: 1px;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+    .mobile-nav-links .mn-sub:active { color: var(--accent); background: var(--accent-light); }
+
+    .page { padding-top: 0; }
+    #home { padding-top: 0; }
+    .page-header { padding: 40px 24px 24px; }
+
+    .home-intro { padding: 40px 24px 0; }
+    .home-row { flex-direction: column !important; gap: 24px; }
+    .home-row-img { flex: none; width: 100%; }
+    .home-projects { padding: 0 24px 40px; }
+    .home-projects-grid { grid-template-columns: 1fr; }
+
+    .projects-overview { grid-template-columns: 1fr; padding: 0 24px 40px; }
+    .project-category { height: 55vw; margin: 0 0 24px; }
+
+    .photo-grid { grid-template-columns: 1fr; padding: 0 24px 40px; }
+
+    .bureau-content, .contact-layout { grid-template-columns: 1fr; }
+    .bureau-text, .bureau-aside, .contact-info, .contact-form-wrap { padding: 40px 24px; }
+
+    footer { padding: 24px 20px; }
+
+    /* Viewer op mobiel */
+    .viewer-page-wrap { padding: 24px 16px 40px; }
+    .viewer-content-layout { flex-direction: column; }
+    .viewer-strip { width: 100%; max-height: none; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+    .viewer-thumb { width: 80px; flex-shrink: 0; }
+    .viewer-page-title { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <img
+    src="images/logo.png"
+    alt="Annelies Paulussen Architectenbureau"
+    class="logo"
+    onclick="showPage('home')"
+    onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block'"
+  >
+  <div id="logo-text" style="display:none; cursor:pointer; font-family:'Cormorant Garamond',serif; font-size:18px; letter-spacing:1px;" onclick="showPage('home')">
+    <span style="color:var(--accent)">annelies</span><br>
+    <span style="font-size:14px; letter-spacing:2px;">paulussen</span>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
+    <li>
+      <a href="#" onclick="showPage('projecten'); return false;">Projecten</a>
+      <div class="dropdown">
+        <a href="#" onclick="showPage('nieuwbouw'); return false;">Nieuwbouw</a>
+        <a href="#" onclick="showPage('renovatie'); return false;">Renovatie</a>
+      </div>
+    </li>
+    <li><a href="#" onclick="showPage('bureau'); return false;">Bureau</a></li>
+    <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-links">
+    <a href="#" class="mn-link" onclick="showPage('home'); closeMobileNav(); return false;">Home</a>
+    <a href="#" class="mn-link" onclick="showPage('projecten'); closeMobileNav(); return false;">Projecten</a>
+    <a href="#" class="mn-sub"  onclick="showPage('nieuwbouw'); closeMobileNav(); return false;">Nieuwbouw</a>
+    <a href="#" class="mn-sub"  onclick="showPage('renovatie'); closeMobileNav(); return false;">Renovatie</a>
+    <a href="#" class="mn-link" onclick="showPage('bureau'); closeMobileNav(); return false;">Bureau</a>
+    <a href="#" class="mn-link" onclick="showPage('contact'); closeMobileNav(); return false;">Contact</a>
+  </div>
+</nav>
+
+<!-- ════════════ HOME ════════════ -->
+<div id="home" class="page active">
+  <!-- Rij 1: foto links, tekst rechts -->
+  <div class="home-intro">
+    <div class="home-row reveal">
+      <div class="home-row-img">
+        <img src="images/nieuwbouw/MAPNAAM/MAPNAAM-1.jpg" alt="Architectuur Annelies Paulussen"
+             onerror="this.parentNode.classList.add('ph-1')">
+      </div>
+      <div class="home-row-text">
+        <h2>Architectuur<br>met <em>karakter</em></h2>
+        <p>Architectenbureau Annelies Paulussen bvba is een gepassioneerd architectenbureau dat maatwerk levert voor zowel particulieren als bedrijven.</p>
+        <p>Van het eerste gesprek tot de oplevering begeleidt Annelies u stap voor stap, met oog voor detail, duurzaamheid en uw persoonlijke stijl.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-divider"><span></span></div>
+
+  <!-- Rij 2: tekst links, foto rechts -->
+  <div class="home-intro">
+    <div class="home-row reverse reveal">
+      <div class="home-row-img">
+        <img src="images/nieuwbouw/MAPNAAM/MAPNAAM-1.jpg" alt="Nieuwbouw en renovatie"
+             onerror="this.parentNode.classList.add('ph-1')">
+      </div>
+      <div class="home-row-text">
+        <h2>Nieuwbouw &amp;<br><em>Renovatie</em></h2>
+        <p>Of u nu droomt van een tijdloze nieuwbouwwoning of uw bestaande woning een nieuw leven wil geven — wij zorgen voor een kwalitatief en tijdloos resultaat dat perfect aansluit bij uw wensen en budget.</p>
+        <p>Elke opdracht is uniek en wordt met de grootste zorg uitgewerkt.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-divider"><span></span></div>
+
+  <!-- Projecten sectie -->
+  <div class="home-projects">
+    <h2 class="home-projects-title reveal"><em>Projecten</em></h2>
+    <div class="home-projects-grid" id="homeProjectsGrid">
+      <!-- Dynamisch ingevuld -->
+    </div>
+    <div class="home-meer-btn">
+      <button onclick="showPage('projecten')">Meer projecten</button>
+    </div>
+  </div>
+
+  <div class="home-divider"><span></span></div>
+
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ PROJECTEN ════════════ -->
+<div id="projecten" class="page">
+  <div class="page-header reveal">
+    <h2><em>Projecten</em></h2>
+  </div>
+  <div class="projects-overview">
+    <div class="project-category" onclick="showPage('nieuwbouw')">
+      <div class="project-category-bg cat-nieuwbouw"></div>
+      <div class="project-category-overlay"></div>
+      <div class="project-category-label">
+        <h3>Nieuwbouw</h3>
+        <p>Ontdek projecten</p>
+      </div>
+    </div>
+    <div class="project-category" onclick="showPage('renovatie')">
+      <div class="project-category-bg cat-renovatie"></div>
+      <div class="project-category-overlay"></div>
+      <div class="project-category-label">
+        <h3>Renovatie</h3>
+        <p>Ontdek projecten</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ NIEUWBOUW ════════════ -->
+<div id="nieuwbouw" class="page photo-grid-page">
+  <div class="page-header reveal">
+    <h2><em>Nieuwbouw</em></h2>
+  </div>
+  <div class="photo-grid" id="nieuwbouwGrid"></div>
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ RENOVATIE ════════════ -->
+<div id="renovatie" class="page photo-grid-page">
+  <div class="page-header reveal">
+    <h2><em>Renovatie</em></h2>
+  </div>
+  <div class="photo-grid" id="renovatieGrid"></div>
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ BUREAU ════════════ -->
+<div id="bureau" class="page">
+  <div class="bureau-content">
+    <div class="bureau-text">
+      <h2 class="reveal">Over het <em>bureau</em></h2>
+      <p class="lead reveal">Architectenbureau Annelies Paulussen bvba is een gepassioneerd architectenbureau dat maatwerk levert voor zowel particulieren als bedrijven.</p>
+      <p class="reveal">Met een uitgebreide expertise in zowel nieuwbouw als renovatieprojecten begeleiden wij u van het eerste gesprek tot de oplevering van uw project. Wij geloven in een nauwe samenwerking met onze klanten, waarbij uw wensen van het ontwerp centraal staan.</p>
+      <p class="reveal">Elk project wordt met de grootste zorg en aandacht voor detail uitgewerkt. Of het nu gaat om een gezinswoning, een bedrijfsgebouw of de verbouwing van een bestaand pand: wij gaan steeds voor een kwalitatief en tijdloos resultaat dat perfect aansluit bij uw persoonlijke stijl en budget.</p>
+      <p class="reveal">Ons bureau combineert een moderne aanpak met een diepgaand respect voor de omgeving en het bestaande karakter van een gebouw. Duurzaamheid en functionaliteit zijn voor ons geen bijzaak, maar een vanzelfsprekendheid.</p>
+      <p class="reveal">Annelies Paulussen is architect en beëdigd schatter. Na haar studies aan de Hogeschool voor Wetenschap &amp; Kunst (Sint-Lucas) behaalde zij haar masterdiploma en richtte zij haar eigen bureau op.</p>
+      <p class="reveal">Wij nemen de volledige coördinatie op ons: van het ontwerp en de vergunningsaanvraag tot de opvolging van de werken op de werf.</p>
+    </div>
+    <div class="bureau-aside">
+      <div class="info-block reveal">
+        <h4>Onze diensten</h4>
+        <ul class="diensten-list">
+          <li>Architectuurontwerp nieuwbouw</li>
+          <li>Renovatie &amp; verbouwing</li>
+          <li>Interieurarchitectuur</li>
+          <li>Stedenbouwkundige vergunningen</li>
+          <li>Energieprestatiecertificaten (EPC)</li>
+          <li>Beëdigde schattingen</li>
+          <li>Werfopvolging &amp; coördinatie</li>
+          <li>3D-visualisaties</li>
+        </ul>
+      </div>
+      <div class="info-block reveal">
+        <h4>Werkwijze</h4>
+        <p>Van een eerste vrijblijvend gesprek tot de definitieve oplevering begeleiden wij u stap voor stap.</p>
+      </div>
+      <div class="info-block reveal">
+        <h4>Erkenning</h4>
+        <p>Lid van de Orde van Architecten – Vlaamse Raad<br>Beëdigd schatter</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ CONTACT ════════════ -->
+<div id="contact" class="page">
+  <div class="contact-layout">
+    <div class="contact-info">
+      <h2 class="reveal">Neem <em>contact</em><br>op</h2>
+      <div class="contact-detail reveal">
+        <h4>Adres</h4>
+        <p>Jagersdreef 11<br>2200 Herentals<br>België</p>
+      </div>
+      <div class="contact-detail reveal">
+        <h4>Telefoon</h4>
+        <a href="tel:+32478696120">0478 69 61 20</a>
+      </div>
+      <div class="contact-detail reveal">
+        <h4>E-mail</h4>
+        <a href="mailto:roes_elias@hotmail.com">roes_elias@hotmail.com</a>
+      </div>
+      <div class="contact-detail reveal">
+        <h4>Openingsuren</h4>
+        <p>Maandag – vrijdag: 9u – 17u<br>Op afspraak buiten de kantooruren</p>
+      </div>
+      <div class="contact-detail reveal">
+        <h4>BTW</h4>
+        <p>BE 0000.000.000</p>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap">
+      <h3 class="reveal">Stuur ons een bericht</h3>
+      <div id="contactFormWrap">
+        <div class="form-group reveal">
+          <label>Naam *</label>
+          <input type="text" id="cNaam" placeholder="Uw volledige naam">
+        </div>
+        <div class="form-group reveal">
+          <label>E-mailadres *</label>
+          <input type="email" id="cEmail" placeholder="uw@email.be">
+        </div>
+        <div class="form-group reveal">
+          <label>Onderwerp</label>
+          <input type="text" id="cOnderwerp" placeholder="Waarmee kunnen wij u helpen?">
+        </div>
+        <button class="submit-btn reveal" onclick="submitForm()">Versturen</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <h3>Bedankt!</h3>
+        <p style="color:#666; font-size:14px; line-height:1.8;">Uw bericht is verstuurd. We nemen zo snel mogelijk contact met u op.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ PROJECT VIEWER (inline pagina) ════════════ -->
+<div class="project-viewer" id="projectViewer">
+  <div class="viewer-page-wrap">
+    <button class="viewer-back-top" id="viewerBackTop" onclick="closeViewer()">Terug naar nieuwbouw</button>
+    <h1 class="viewer-page-title" id="viewerTitle">Project</h1>
+    <p class="viewer-page-loc" id="viewerLoc"></p>
+    <div class="viewer-page-divider"><span></span></div>
+
+    <div class="viewer-content-layout">
+      <!-- Thumbnail strip links -->
+      <div class="viewer-strip" id="viewerStrip"></div>
+
+      <!-- Grote foto rechts -->
+      <div class="viewer-main-area">
+        <div class="viewer-img-wrap" id="viewerImgWrap">
+          <div class="viewer-img-placeholder" id="viewerImgPlaceholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span id="viewerPlaceholderLabel">Foto</span>
+          </div>
+          <img class="viewer-img" id="viewerImg" src="" alt="" style="display:none;">
+        </div>
+        <div class="viewer-arrows">
+          <button class="viewer-arrow-btn" onclick="viewerPrev()">← Vorige</button>
+          <span class="viewer-counter" id="viewerCounter">1 / 1</span>
+          <button class="viewer-arrow-btn" onclick="viewerNext()">Volgende →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ── DATA ──
+const nieuwbouwProjecten = [
+  { naam: 'Nieuwbouw D', locatie: 'Poederlee', home: true, ph: 'ph-1',
+    images: ['images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-1.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-2.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-3.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-4.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-5.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-6.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-7.jpg'] },
+  { naam: 'Nieuwbouw H', locatie: 'Lichtaart', home: true, ph: 'ph-1',
+    images: ['images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-01.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-02.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-03.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-04.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-05.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-06.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-07.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-08.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-09.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-10.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-11.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-12.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-13.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-14.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-15.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-16.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-17.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-18.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-19.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-20.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-21.jpg'] },
+  { naam: 'NAAM', locatie: 'LOCATIE', home: false, ph: 'ph-1',
+    images: ['images/nieuwbouw/MAPNAAM/MAPNAAM-1.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-2.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-3.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-4.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-5.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-6.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-7.jpg'] },
+];
+
+const renovatieProjecten = [
+  { naam: 'NAAM', locatie: 'LOCATIE', home: false, ph: 'ph-1',
+    images: ['images/renovatie/MAPNAAM/MAPNAAM-1.jpg','images/renovatie/MAPNAAM/MAPNAAM-2.jpg','images/renovatie/MAPNAAM/MAPNAAM-3.jpg','images/renovatie/MAPNAAM/MAPNAAM-4.jpg','images/renovatie/MAPNAAM/MAPNAAM-5.jpg','images/renovatie/MAPNAAM/MAPNAAM-6.jpg','images/renovatie/MAPNAAM/MAPNAAM-7.jpg'] },
+];
+
+// ── Viewer state ──
+let currentProject = null;
+let currentPhotoIndex = 0;
+let viewerSourcePage = 'nieuwbouw';
+
+// ── Build thumbnail strip ──
+function buildViewerStrip(project) {
+  const strip = document.getElementById('viewerStrip');
+  strip.innerHTML = '';
+  for (let i = 0; i < project.images.length; i++) {
+    const thumb = document.createElement('div');
+    thumb.className = 'viewer-thumb' + (i === 0 ? ' active' : '');
+    thumb.dataset.index = i;
+
+    const imgSrc = project.images && project.images[i] ? project.images[i] : null;
+    if (imgSrc) {
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      img.alt = project.naam + ' foto ' + (i + 1);
+      img.loading = 'lazy';
+      thumb.appendChild(img);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = 'viewer-thumb-placeholder';
+      ph.textContent = (i + 1);
+      thumb.appendChild(ph);
+    }
+
+    const num = document.createElement('span');
+    num.className = 'viewer-thumb-num';
+    num.textContent = (i + 1);
+    thumb.appendChild(num);
+
+    thumb.addEventListener('click', () => viewerGoTo(i));
+    strip.appendChild(thumb);
+  }
+}
+
+// ── Update main image ──
+function updateViewerMain() {
+  const project = currentProject;
+  const i = currentPhotoIndex;
+  const imgEl = document.getElementById('viewerImg');
+  const phEl = document.getElementById('viewerImgPlaceholder');
+  const label = document.getElementById('viewerPlaceholderLabel');
+  const counter = document.getElementById('viewerCounter');
+
+  counter.textContent = (i + 1) + ' / ' + project.images.length;
+
+  const imgSrc = project.images && project.images[i] ? project.images[i] : null;
+  if (imgSrc) {
+    imgEl.src = imgSrc;
+    imgEl.alt = project.naam + ' – foto ' + (i + 1);
+    imgEl.style.display = 'block';
+    phEl.style.display = 'none';
+  } else {
+    imgEl.style.display = 'none';
+    phEl.style.display = 'flex';
+    label.textContent = 'Foto ' + (i + 1) + ' — ' + project.naam;
+  }
+
+  document.querySelectorAll('.viewer-thumb').forEach((t, idx) => {
+    t.classList.toggle('active', idx === i);
+  });
+
+  const activeThumb = document.querySelector('.viewer-thumb.active');
+  if (activeThumb) activeThumb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+// ── Open viewer ──
+function openViewer(project, sourcePage) {
+  currentProject = project;
+  currentPhotoIndex = 0;
+  viewerSourcePage = sourcePage || 'nieuwbouw';
+
+  // Update terug-knop tekst
+  const backBtn = document.getElementById('viewerBackTop');
+  if (sourcePage === 'renovatie') {
+    backBtn.textContent = '← Terug naar renovatie';
+  } else if (sourcePage === 'nieuwbouw') {
+    backBtn.textContent = '← Terug naar nieuwbouw';
+  } else {
+    backBtn.textContent = '← Terug naar projecten';
+  }
+  // Reset ::before content trick - use direct text
+  backBtn.style.paddingLeft = '0';
+
+  document.getElementById('viewerTitle').textContent = project.naam;
+  document.getElementById('viewerLoc').textContent = project.locatie;
+
+  buildViewerStrip(project);
+  updateViewerMain();
+
+  // Verberg alle pagina's, toon de viewer als een pagina
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const viewer = document.getElementById('projectViewer');
+  viewer.classList.add('open');
+  window.scrollTo(0, 0);
+}
+
+function closeViewer() {
+  document.getElementById('projectViewer').classList.remove('open');
+  showPage(viewerSourcePage);
+}
+
+function viewerGoTo(n) {
+  currentPhotoIndex = n;
+  updateViewerMain();
+}
+
+function viewerNext() {
+  viewerGoTo((currentPhotoIndex + 1) % currentProject.images.length);
+}
+
+function viewerPrev() {
+  viewerGoTo((currentPhotoIndex - 1 + currentProject.images.length) % currentProject.images.length);
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('projectViewer').classList.contains('open')) return;
+  if (e.key === 'ArrowRight') viewerNext();
+  if (e.key === 'ArrowLeft') viewerPrev();
+  if (e.key === 'Escape') closeViewer();
+});
+
+// ── Render photo grids ──
+function renderGrid(containerId, projecten, sourcePage) {
+  const grid = document.getElementById(containerId);
+  grid.innerHTML = '';
+  projecten.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'photo-item reveal';
+
+    const coverSrc = p.images && p.images[0] ? p.images[0] : null;
+    const bgStyle = coverSrc
+      ? `background-image: url('${coverSrc}'); background-size: cover; background-position: center;`
+      : '';
+
+    item.innerHTML = `
+      <div class="photo-item-bg ${coverSrc ? '' : p.ph}" style="${bgStyle}"></div>
+      <div class="photo-item-overlay">
+        <div class="photo-item-label">
+          <h4>${p.naam}</h4>
+          <p>${p.locatie}</p>
+        </div>
+      </div>
+    `;
+    item.addEventListener('click', () => openViewer(p, sourcePage));
+    grid.appendChild(item);
+    setTimeout(() => item.classList.add('visible'), 100 + i * 60);
+  });
+}
+
+// ── Render home projects (4 stuks, mix nieuwbouw + renovatie) ──
+function renderHomeProjects() {
+  const grid = document.getElementById('homeProjectsGrid');
+  grid.innerHTML = '';
+  // Toon enkel projecten met home: true
+  const selection = [...nieuwbouwProjecten, ...renovatieProjecten].filter(p => p.home === true);
+  selection.forEach((p, i) => {
+    const sourcePage = nieuwbouwProjecten.includes(p) ? 'nieuwbouw' : 'renovatie';
+    const card = document.createElement('div');
+    card.className = 'home-project-card reveal';
+    const coverSrc = p.images && p.images[0] ? p.images[0] : null;
+    card.innerHTML = `
+      <div class="home-project-card-img">
+        ${coverSrc
+          ? `<img src="${coverSrc}" alt="${p.naam}" loading="lazy" onerror="this.parentNode.style.background='#ddd'">`
+          : `<div style="width:100%;height:100%;background:var(--grey);display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;">${p.naam}</div>`
+        }
+      </div>
+      <div class="home-project-card-label">
+        <h4>${p.naam}</h4>
+        <p>${p.locatie}</p>
+      </div>
+    `;
+    card.addEventListener('click', () => openViewer(p, sourcePage));
+    grid.appendChild(card);
+    setTimeout(() => card.classList.add('visible'), 100 + i * 80);
+  });
+}
+
+// ── Mobile nav ──
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const btn = document.getElementById('hamburger');
+  const isOpen = nav.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+}
+
+function closeMobileNav() {
+  document.getElementById('mobileNav').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+
+// ── Page switching ──
+function showPage(id) {
+  document.getElementById('projectViewer').classList.remove('open');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById(id);
+  if (page) {
+    page.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  closeMobileNav();
+  setTimeout(initReveal, 50);
+  if (id === 'nieuwbouw') renderGrid('nieuwbouwGrid', nieuwbouwProjecten, 'nieuwbouw');
+  if (id === 'renovatie') renderGrid('renovatieGrid', renovatieProjecten, 'renovatie');
+  if (id === 'home') renderHomeProjects();
+}
+
+// ── Scroll reveal ──
+function initReveal() {
+  const reveals = document.querySelectorAll('.page.active .reveal, .project-viewer.open .reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+  reveals.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.9) el.classList.add('visible');
+  });
+}
+
+// ── Navbar scroll ──
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// ── Contact form ──
+async function submitForm() {
+  const naam = document.getElementById('cNaam').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const onderwerp = document.getElementById('cOnderwerp').value.trim();
+  if (!naam || !email) {
+    alert('Vul minstens uw naam en e-mailadres in.');
+    return;
+  }
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = 'Bezig…';
+  btn.disabled = true;
+  try {
+    const res = await fetch('https://formspree.io/f/xykvqgjk', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ naam, email, onderwerp })
+    });
+    if (res.ok) {
+      document.getElementById('contactFormWrap').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    } else {
+      alert('Er is iets misgegaan. Probeer het opnieuw of neem contact op via telefoon.');
+      btn.textContent = 'Versturen';
+      btn.disabled = false;
+    }
+  } catch {
+    alert('Geen internetverbinding. Probeer het opnieuw.');
+    btn.textContent = 'Versturen';
+    btn.disabled = false;
+  }
+}
+
+// ── Fix viewer back button (remove ::before, use text directly) ──
+(function patchViewerBack() {
+  const btn = document.getElementById('viewerBackTop');
+  if (btn) {
+    btn.style.cssText += '; display:inline-flex; align-items:center; gap:0;';
+  }
+})();
+
+// ── Init ──
+renderHomeProjects();
+initReveal();
+</script>
+</body>
+</html>
