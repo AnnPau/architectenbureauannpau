@@ -41,8 +41,8 @@
     {
       "naam": "NAAM",
       "locatie": "LOCATIE",
-      "map": "MAP",
-      "prefix": "PREFIX",
+      "map": "images/nieuwbouw/prefix",
+      "prefix": "prefix",
       "aantalFotos": 1,
       "cijfers": 1,
       "heeftMenuFoto": true,
