@@ -1384,21 +1384,14 @@
   </footer>
 </div>
 
+<script src="data/data-loader.js"></script>
 <script>
 // ── DATA ──
-const nieuwbouwProjecten = [
-  { naam: 'Nieuwbouw D', locatie: 'Poederlee', home: true, ph: 'ph-1',
-    images: ['images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-1.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-2.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-3.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-4.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-5.jpg','images/nieuwbouw/32-D-Poederlee/32-D-Poederlee-6.jpg'] },
-  { naam: 'Nieuwbouw H', locatie: 'Lichtaart', home: true, ph: 'ph-1',
-    images: ['images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-01.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-02.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-03.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-04.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-05.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-06.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-07.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-08.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-09.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-10.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-11.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-12.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-13.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-14.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-15.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-16.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-17.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-18.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-19.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-20.jpg','images/nieuwbouw/19-H-Lichtaart/19-H-Lichtaart-21.jpg'] },
-  { naam: 'NAAM', locatie: 'LOCATIE', home: false, ph: 'ph-1',
-    images: ['images/nieuwbouw/MAPNAAM/MAPNAAM-1.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-2.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-3.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-4.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-5.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-6.jpg','images/nieuwbouw/MAPNAAM/MAPNAAM-7.jpg'] },
-];
-
-const renovatieProjecten = [
-  { naam: 'NAAM', locatie: 'LOCATIE', home: false, ph: 'ph-1',
-    images: ['images/renovatie/MAPNAAM/MAPNAAM-1.jpg','images/renovatie/MAPNAAM/MAPNAAM-2.jpg','images/renovatie/MAPNAAM/MAPNAAM-3.jpg','images/renovatie/MAPNAAM/MAPNAAM-4.jpg','images/renovatie/MAPNAAM/MAPNAAM-5.jpg','images/renovatie/MAPNAAM/MAPNAAM-6.jpg','images/renovatie/MAPNAAM/MAPNAAM-7.jpg'] },
-];
+// De echte projectgegevens staan niet meer hier, maar in data/projects.json.
+// Deze twee variabelen worden automatisch gevuld door laadEnBouwProjecten()
+// (zie helemaal onderaan dit script, bij "Init"). Niet handmatig invullen.
+let nieuwbouwProjecten = [];
+let renovatieProjecten = [];
 
 // ── Viewer state ──
 let currentProject = null;
@@ -1533,7 +1526,7 @@ function renderGrid(containerId, projecten, sourcePage) {
     const item = document.createElement('div');
     item.className = 'photo-item reveal';
 
-    const coverSrc = p.images && p.images[0] ? p.images[0] : null;
+    const coverSrc = p.cover ? p.cover : (p.images && p.images[0] ? p.images[0] : null);
     const bgStyle = coverSrc
       ? `background-image: url('${coverSrc}'); background-size: cover; background-position: center;`
       : '';
@@ -1563,7 +1556,7 @@ function renderHomeProjects() {
     const sourcePage = nieuwbouwProjecten.includes(p) ? 'nieuwbouw' : 'renovatie';
     const card = document.createElement('div');
     card.className = 'home-project-card reveal';
-    const coverSrc = p.images && p.images[0] ? p.images[0] : null;
+    const coverSrc = p.cover ? p.cover : (p.images && p.images[0] ? p.images[0] : null);
     card.innerHTML = `
       <div class="home-project-card-img">
         ${coverSrc
@@ -1671,8 +1664,17 @@ async function submitForm() {
 })();
 
 // ── Init ──
-renderHomeProjects();
-initReveal();
+(async function initData() {
+  try {
+    const projecten = await laadEnBouwProjecten('data/projects.json');
+    nieuwbouwProjecten = projecten.nieuwbouw;
+    renovatieProjecten = projecten.renovatie;
+  } catch (err) {
+    console.error('Projectdata kon niet geladen worden:', err);
+  }
+  renderHomeProjects();
+  initReveal();
+})();
 </script>
 </body>
 </html>
