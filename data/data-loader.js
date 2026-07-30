@@ -1,37 +1,18 @@
 /* ============================================================
    DATA-LOADER
    ------------------------------------------------------------
-   Dit bestand leest data/projects.json in en bouwt daaruit
-   automatisch de lijst van foto's per project op, volgens de
-   bestandsnaam-conventie:
+   Dit bestand leest data/projects.json in en bouwt daaruit automatisch de lijst van foto's per project op:
 
        <prefix>-<nummer>.<extensie>        bv. 30-VD-P-01.jpg
        <prefix>-menu.<extensie>            bv. 30-VD-P-menu.jpg  (optioneel)
 
-   - <prefix>   = projectnummer-initialen-plaatsafkorting, bv. "30-VD-P"
+   - <prefix>   = projectnummer-initialen-plaatsafkorting, bv. "32-D-P"
    - <nummer>   = volgnummer van de foto binnen het project (01, 02, 03…)
-   - "-menu"    = de foto die op de overzichtspagina (nieuwbouw/renovatie
-                  en op de homepagina) als miniatuur getoond wordt.
-                  Als er op geklikt wordt, opent de fotoviewer gewoon
-                  bij foto 01, 02, 03… in volgorde.
+   - "-menu"    = de foto die op de overzichtspagina (nieuwbouw/renovatie en op de homepagina) als menufoto getoond wordt.
+                  Als er op geklikt wordt, opent de fotoviewer bij foto 01, 02, 03… in volgorde.
 
-   Om een foto toe te voegen aan een bestaand project:
-     1. Zet de foto in de juiste map (zie "map" in projects.json)
-        met de volgende volgnummer, bv. 30-VD-P-08.jpg
-     2. Verhoog "aantalFotos" in projects.json met 1
-   Dat is alles — de website laadt de foto automatisch op de
-   juiste plaats in.
-
-   Om een volledig nieuw project toe te voegen: zie het voorbeeld
-   bovenaan projects.json en README.md.
    ============================================================ */
 
-/**
- * Haalt het databestand op en bouwt de projecten (nieuwbouw + renovatie)
- * op tot bruikbare objecten voor de website (naam, locatie, cover, images…).
- * @param {string} pad - pad naar het JSON-databestand
- * @returns {Promise<{nieuwbouw: Array, renovatie: Array}>}
- */
 async function laadEnBouwProjecten(pad) {
   const respons = await fetch(pad);
   if (!respons.ok) {
@@ -45,11 +26,6 @@ async function laadEnBouwProjecten(pad) {
   };
 }
 
-/**
- * Zet een lijst project-definities (zoals in projects.json) om naar
- * de objectvorm die de rest van de website verwacht:
- *   { naam, locatie, home, ph, cover, images }
- */
 function bouwProjectenArray(projectenLijst) {
   return (projectenLijst || []).map(function (p) {
     const extensie = p.extensie || 'jpg';
