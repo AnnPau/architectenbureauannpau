@@ -1,0 +1,71 @@
+{
+  "_toelichting": [
+    "Dit is het databestand van de website. Elk project heeft een eigen object.",
+    "Velden per project:",
+    "  naam          - naam zoals getoond op de website (bv. 'Nieuwbouw D')",
+    "  locatie       - plaatsnaam zoals getoond op de website (bv. 'Poederlee')",
+    "  map           - pad naar de map met de foto's van dit project",
+    "  prefix        - vaste basisnaam van de bestanden, bv. '30-VD-P'",
+    "                  (projectnummer-initialen-plaatsafkorting)",
+    "  aantalFotos   - hoeveel genummerde foto's (01, 02, 03…) dit project heeft",
+    "  cijfers       - aantal cijfers voor de nummering: 2 = 01, 02… / 1 = 1, 2…",
+    "  extensie      - bestandsextensie, standaard 'jpg' (mag weg indien 'jpg')",
+    "  heeftMenuFoto - true als er een aparte '<prefix>-menu.jpg' bestaat die",
+    "                  als miniatuur dient op de overzichtspagina",
+    "  home          - true om dit project ook op de homepagina te tonen",
+    "",
+    "Foto toevoegen aan een bestaand project:",
+    "  1. Plaats de foto in de map van het project met het volgende volgnummer",
+    "     (bv. 30-VD-P-08.jpg als er al 07 foto's zijn)",
+    "  2. Verhoog 'aantalFotos' met 1",
+    "",
+    "Nieuw project toevoegen: kopieer een van de objecten hieronder, pas de",
+    "velden aan en zet de foto's volgens dezelfde conventie in de juiste map."
+  ],
+
+  "nieuwbouw": [
+    {
+      "naam": "Nieuwbouw D",
+      "locatie": "Poederlee",
+      "map": "images/nieuwbouw/32-D-Poederlee",
+      "prefix": "32-D-Poederlee",
+      "aantalFotos": 6,
+      "cijfers": 1,
+      "heeftMenuFoto": false,
+      "home": true
+    },
+    {
+      "naam": "Nieuwbouw H",
+      "locatie": "Lichtaart",
+      "map": "images/nieuwbouw/19-H-Lichtaart",
+      "prefix": "19-H-Lichtaart",
+      "aantalFotos": 21,
+      "cijfers": 2,
+      "heeftMenuFoto": false,
+      "home": true
+    },
+    {
+      "naam": "VOORBEELD PROJECT",
+      "locatie": "VOORBEELD LOCATIE",
+      "map": "images/nieuwbouw/30-VD-P",
+      "prefix": "30-VD-P",
+      "aantalFotos": 7,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": false
+    }
+  ],
+
+  "renovatie": [
+    {
+      "naam": "VOORBEELD PROJECT",
+      "locatie": "VOORBEELD LOCATIE",
+      "map": "images/renovatie/30-VD-P",
+      "prefix": "30-VD-P",
+      "aantalFotos": 7,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": false
+    }
+  ]
+}
