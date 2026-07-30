@@ -43,8 +43,8 @@
       "locatie": "LOCATIE",
       "map": "MAP",
       "prefix": "PREFIX",
-      "aantalFotos": 0,
-      "cijfers": 0,
+      "aantalFotos": 1,
+      "cijfers": 1,
       "heeftMenuFoto": true,
       "home": true
     }
