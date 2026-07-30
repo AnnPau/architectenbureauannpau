@@ -45,11 +45,11 @@
       "home": true
     },
     {
-      "naam": "VOORBEELD PROJECT",
-      "locatie": "VOORBEELD LOCATIE",
-      "map": "images/nieuwbouw/30-VD-P",
+      "naam": "Test",
+      "locatie": "Z",
+      "map": "images/nieuwbouw/30-VD-Z",
       "prefix": "30-VD-P",
-      "aantalFotos": 7,
+      "aantalFotos": 15,
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": false
