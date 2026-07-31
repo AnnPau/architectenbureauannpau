@@ -1,0 +1,25 @@
+# ─────────────────────────────────────────────────────────────
+# Nodig voor de nette URL's van de website (bv. /nieuwbouw,
+# /renovatie/nieuwbouw-d-poederlee, ...).
+#
+# De site is één HTML-bestand (index.html) dat via JavaScript
+# bepaalt welke "pagina" getoond wordt. Zonder deze instelling
+# geeft de server een 404-fout wanneer iemand rechtstreeks naar
+# bv. jouwsite.be/nieuwbouw surft, of de pagina herlaadt.
+#
+# Deze regels zorgen ervoor dat élk pad dat niet naar een
+# bestaand bestand of map verwijst (afbeeldingen, data/, css/js…)
+# gewoon index.html teruggeeft. JavaScript neemt het dan over.
+# ─────────────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Bestaat het gevraagde pad als echt bestand of map? Laat met rust.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Alles wat overblijft (de "nette" pagina-URL's) -> index.html
+  RewriteRule ^ index.html [L]
+</IfModule>
