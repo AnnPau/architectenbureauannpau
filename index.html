@@ -1001,25 +1001,25 @@
     src="images/logo.png"
     alt="Annelies Paulussen Architectenbureau"
     class="logo"
-    onclick="showPage('home')"
+    onclick="showPage('home'); return false;"
     onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block'"
   >
-  <div id="logo-text" style="display:none; cursor:pointer; font-family:'Cormorant Garamond',serif; font-size:18px; letter-spacing:1px;" onclick="showPage('home')">
+  <div id="logo-text" style="display:none; cursor:pointer; font-family:'Cormorant Garamond',serif; font-size:18px; letter-spacing:1px;" onclick="showPage('home'); return false;">
     <span style="color:var(--accent)">annelies</span><br>
     <span style="font-size:14px; letter-spacing:2px;">paulussen</span>
   </div>
 
   <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
+    <li><a href="/" onclick="showPage('home'); return false;">Home</a></li>
     <li>
-      <a href="#" onclick="showPage('projecten'); return false;">Projecten</a>
+      <a href="/projecten" onclick="showPage('projecten'); return false;">Projecten</a>
       <div class="dropdown">
-        <a href="#" onclick="showPage('nieuwbouw'); return false;">Nieuwbouw</a>
-        <a href="#" onclick="showPage('renovatie'); return false;">Renovatie</a>
+        <a href="/nieuwbouw" onclick="showPage('nieuwbouw'); return false;">Nieuwbouw</a>
+        <a href="/renovatie" onclick="showPage('renovatie'); return false;">Renovatie</a>
       </div>
     </li>
-    <li><a href="#" onclick="showPage('bureau'); return false;">Bureau</a></li>
-    <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+    <li><a href="/bureau" onclick="showPage('bureau'); return false;">Bureau</a></li>
+    <li><a href="/contact" onclick="showPage('contact'); return false;">Contact</a></li>
   </ul>
 
   <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
@@ -1030,12 +1030,12 @@
 <div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="closeMobileNav()"></div>
 <nav class="mobile-nav" id="mobileNav">
   <div class="mobile-nav-links">
-    <a href="#" class="mn-link" onclick="showPage('home'); closeMobileNav(); return false;">Home</a>
-    <a href="#" class="mn-link" onclick="showPage('projecten'); closeMobileNav(); return false;">Projecten</a>
-    <a href="#" class="mn-sub"  onclick="showPage('nieuwbouw'); closeMobileNav(); return false;">Nieuwbouw</a>
-    <a href="#" class="mn-sub"  onclick="showPage('renovatie'); closeMobileNav(); return false;">Renovatie</a>
-    <a href="#" class="mn-link" onclick="showPage('bureau'); closeMobileNav(); return false;">Bureau</a>
-    <a href="#" class="mn-link" onclick="showPage('contact'); closeMobileNav(); return false;">Contact</a>
+    <a href="/" class="mn-link" onclick="showPage('home'); closeMobileNav(); return false;">Home</a>
+    <a href="/projecten" class="mn-link" onclick="showPage('projecten'); closeMobileNav(); return false;">Projecten</a>
+    <a href="/nieuwbouw" class="mn-sub"  onclick="showPage('nieuwbouw'); closeMobileNav(); return false;">Nieuwbouw</a>
+    <a href="/renovatie" class="mn-sub"  onclick="showPage('renovatie'); closeMobileNav(); return false;">Renovatie</a>
+    <a href="/bureau" class="mn-link" onclick="showPage('bureau'); closeMobileNav(); return false;">Bureau</a>
+    <a href="/contact" class="mn-link" onclick="showPage('contact'); closeMobileNav(); return false;">Contact</a>
   </div>
 </nav>
 
@@ -1338,7 +1338,7 @@
 <!-- ════════════ PROJECT VIEWER (inline pagina) ════════════ -->
 <div class="project-viewer" id="projectViewer">
   <div class="viewer-page-wrap">
-    <button class="viewer-back-top" id="viewerBackTop" onclick="closeViewer()"> Terug naar nieuwbouw</button>
+    <button class="viewer-back-top" id="viewerBackTop" onclick="closeViewer()">Terug naar nieuwbouw</button>
     <h1 class="viewer-page-title" id="viewerTitle">Project</h1>
     <p class="viewer-page-loc" id="viewerLoc"></p>
     <div class="viewer-page-divider"><span></span></div>
@@ -1402,6 +1402,96 @@ let renovatieProjecten = [];
 let currentProject = null;
 let currentPhotoIndex = 0;
 let viewerSourcePage = 'nieuwbouw';
+
+// ══════════════════════════════════════════════════════════════
+// ROUTING — echte URL's per pagina, met werkende browser-terugknop
+// ══════════════════════════════════════════════════════════════
+// Elke "pagina" (home, projecten, nieuwbouw, renovatie, bureau,
+// contact) en elk geopend project krijgt een eigen, nette URL
+// (bv. /nieuwbouw of /nieuwbouw/nieuwbouw-d-poederlee). Klikken
+// verandert de URL via history.pushState (geen volledige
+// pagina-herlaad), en de browser-vorige/volgende-knoppen werken
+// via het 'popstate' event.
+//
+// LET OP: dit vereist dat de server elk van deze paden terugstuurt
+// naar index.html (een "SPA-fallback"). Zie het bijgeleverde
+// .htaccess-bestand voor Apache-hosting.
+
+const PAGINA_IDS = ['home', 'projecten', 'nieuwbouw', 'renovatie', 'bureau', 'contact'];
+
+const PAGINA_TITELS = {
+  home: 'Annelies Paulussen – Architectenbureau bvba',
+  projecten: 'Projecten – Annelies Paulussen',
+  nieuwbouw: 'Nieuwbouw – Annelies Paulussen',
+  renovatie: 'Renovatie – Annelies Paulussen',
+  bureau: 'Bureau – Annelies Paulussen',
+  contact: 'Contact – Annelies Paulussen'
+};
+
+function slugify(str) {
+  return String(str || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // accenten weg
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+// Voegt aan elk project een unieke 'slug' toe (op basis van naam + locatie),
+// zodat we er een nette URL van kunnen maken en later terugvinden.
+function voegSlugsToe(projectenLijst) {
+  (projectenLijst || []).forEach(p => { p.slug = slugify(p.naam + '-' + p.locatie); });
+}
+
+function padVoorPagina(id) {
+  return id === 'home' ? '/' : '/' + id;
+}
+
+function padVoorProject(project, sourcePage) {
+  return '/' + sourcePage + '/' + project.slug;
+}
+
+function vindProjectViaSlug(sourcePage, slug) {
+  const lijst = sourcePage === 'renovatie' ? renovatieProjecten : nieuwbouwProjecten;
+  return (lijst || []).find(p => p.slug === slug) || null;
+}
+
+// Vertaalt het huidige URL-pad naar de juiste pagina of projectviewer.
+function routeNaarPad(pad, opts) {
+  opts = opts || {};
+  const delen = String(pad || '/').split('/').filter(Boolean);
+
+  if (delen.length === 0) { showPage('home', opts); return; }
+
+  const eerste = delen[0];
+
+  if (delen.length === 1 && PAGINA_IDS.includes(eerste)) {
+    showPage(eerste, opts);
+    return;
+  }
+
+  if (delen.length === 2 && (eerste === 'nieuwbouw' || eerste === 'renovatie')) {
+    const project = vindProjectViaSlug(eerste, delen[1]);
+    if (project) { openViewer(project, eerste, opts); return; }
+    showPage(eerste, opts); // project niet (meer) gevonden -> overzicht
+    return;
+  }
+
+  showPage('home', opts); // onbekend pad -> home
+}
+
+// Reageer op de browser-terug/volgende-knoppen
+window.addEventListener('popstate', (e) => {
+  const opts = { updateHistory: false };
+  if (e.state && e.state.type === 'project') {
+    const project = vindProjectViaSlug(e.state.sourcePage, e.state.slug);
+    if (project) { openViewer(project, e.state.sourcePage, opts); return; }
+  }
+  if (e.state && e.state.type === 'page') {
+    showPage(e.state.id, opts);
+    return;
+  }
+  routeNaarPad(location.pathname, opts);
+});
 
 // ── Build thumbnail strip ──
 function buildViewerStrip(project) {
@@ -1488,7 +1578,8 @@ function updateViewerMain() {
 }
 
 // ── Open viewer ──
-function openViewer(project, sourcePage) {
+function openViewer(project, sourcePage, opts) {
+  opts = opts || {};
   currentProject = project;
   currentPhotoIndex = 0;
   viewerSourcePage = sourcePage || 'nieuwbouw';
@@ -1496,11 +1587,11 @@ function openViewer(project, sourcePage) {
   // Update terug-knop tekst
   const backBtn = document.getElementById('viewerBackTop');
   if (sourcePage === 'renovatie') {
-    backBtn.textContent = ' Terug naar renovatie';
+    backBtn.textContent = 'Terug naar renovatie';
   } else if (sourcePage === 'nieuwbouw') {
-    backBtn.textContent = ' Terug naar nieuwbouw';
+    backBtn.textContent = 'Terug naar nieuwbouw';
   } else {
-    backBtn.textContent = ' Terug naar projecten';
+    backBtn.textContent = 'Terug naar projecten';
   }
   // Reset ::before content trick - use direct text
   backBtn.style.paddingLeft = '0';
@@ -1516,6 +1607,18 @@ function openViewer(project, sourcePage) {
   const viewer = document.getElementById('projectViewer');
   viewer.classList.add('open');
   window.scrollTo(0, 0);
+  closeMobileNav();
+
+  if (opts.updateHistory !== false) {
+    document.title = project.naam + ' – ' + project.locatie + ' | Annelies Paulussen';
+    const pad = padVoorProject(project, viewerSourcePage);
+    const state = { type: 'project', sourcePage: viewerSourcePage, slug: project.slug };
+    if (opts.replace) {
+      history.replaceState(state, '', pad);
+    } else if (location.pathname !== pad) {
+      history.pushState(state, '', pad);
+    }
+  }
 }
 
 function closeViewer() {
@@ -1675,7 +1778,8 @@ function closeMobileNav() {
 }
 
 // ── Page switching ──
-function showPage(id) {
+function showPage(id, opts) {
+  opts = opts || {};
   document.getElementById('projectViewer').classList.remove('open');
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const page = document.getElementById(id);
@@ -1688,6 +1792,16 @@ function showPage(id) {
   if (id === 'nieuwbouw') renderGrid('nieuwbouwGrid', nieuwbouwProjecten, 'nieuwbouw');
   if (id === 'renovatie') renderGrid('renovatieGrid', renovatieProjecten, 'renovatie');
   if (id === 'home') renderHomeProjects();
+
+  if (opts.updateHistory !== false) {
+    document.title = PAGINA_TITELS[id] || document.title;
+    const pad = padVoorPagina(id);
+    if (opts.replace) {
+      history.replaceState({ type: 'page', id }, '', pad);
+    } else if (location.pathname !== pad) {
+      history.pushState({ type: 'page', id }, '', pad);
+    }
+  }
 }
 
 // ── Scroll reveal ──
@@ -1755,9 +1869,14 @@ async function submitForm() {
     const projecten = await laadEnBouwProjecten('data/projects.json');
     nieuwbouwProjecten = projecten.nieuwbouw;
     renovatieProjecten = projecten.renovatie;
+    voegSlugsToe(nieuwbouwProjecten);
+    voegSlugsToe(renovatieProjecten);
   } catch (err) {
     console.error('Projectdata kon niet geladen worden:', err);
   }
+  // Toon de pagina (of het project) die bij de huidige URL hoort,
+  // zonder een nieuwe entry aan de geschiedenis toe te voegen.
+  routeNaarPad(location.pathname, { replace: true });
   renderHomeProjects();
   initReveal();
 })();
