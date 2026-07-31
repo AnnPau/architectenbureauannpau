@@ -443,9 +443,11 @@
     width: 100%; height: 100%;
     background-size: cover;
     background-position: center;
-    transition: transform 0.5s var(--transition);
+    transition: transform 0.5s var(--transition), opacity 0.5s ease;
     /* Geen donker worden: overlay regelt alleen glow, geen verduistering */
   }
+  .photo-item-bg.lazy-bg { opacity: 0; }
+  .photo-item-bg.lazy-bg.loaded { opacity: 1; }
   /* hover: GEEN schaal op bg → geen donker effect, wel glow via ::after */
   .photo-item:hover .photo-item-bg { transform: scale(1.03); }
 
@@ -608,7 +610,10 @@
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
+  .viewer-thumb img.loaded { opacity: 1; }
   .viewer-thumb-placeholder {
     width: 100%; height: 100%;
     background: var(--grey);
@@ -1402,6 +1407,7 @@ let viewerSourcePage = 'nieuwbouw';
 function buildViewerStrip(project) {
   const strip = document.getElementById('viewerStrip');
   strip.innerHTML = '';
+  const viewerThumbImgsInOrder = [];
   for (let i = 0; i < project.images.length; i++) {
     const thumb = document.createElement('div');
     thumb.className = 'viewer-thumb' + (i === 0 ? ' active' : '');
@@ -1410,10 +1416,10 @@ function buildViewerStrip(project) {
     const imgSrc = project.images && project.images[i] ? project.images[i] : null;
     if (imgSrc) {
       const img = document.createElement('img');
-      img.src = imgSrc;
       img.alt = project.naam + ' foto ' + (i + 1);
-      img.loading = 'lazy';
+      img.dataset.src = imgSrc; // src bewust nog niet zetten: laadt nadien in volgorde
       thumb.appendChild(img);
+      viewerThumbImgsInOrder.push(img);
     } else {
       const ph = document.createElement('div');
       ph.className = 'viewer-thumb-placeholder';
@@ -1429,6 +1435,25 @@ function buildViewerStrip(project) {
     thumb.addEventListener('click', () => viewerGoTo(i));
     strip.appendChild(thumb);
   }
+
+  // Thumbnails rustig en in volgorde (01, 02, 03…) laten inladen,
+  // in plaats van alles tegelijk aan te vragen.
+  loadImagesInOrder(viewerThumbImgsInOrder);
+}
+
+// ── Afbeeldingen strikt in volgorde laden (max. 2 tegelijk) ──
+function loadImagesInOrder(imgElementen) {
+  if (!imgElementen.length) return;
+  const queue = createImageQueue(2);
+  imgElementen.forEach(img => {
+    const src = img.dataset.src;
+    if (!src) return;
+    queue.add(src, (ok) => {
+      if (ok) img.src = src;
+      img.classList.add('loaded');
+      img.removeAttribute('data-src');
+    });
+  });
 }
 
 // ── Update main image ──
@@ -1518,6 +1543,67 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeViewer();
 });
 
+// ── Rustige, op volgorde ladende image-queue ──────────────────
+// In plaats van alle afbeeldingen tegelijk aan te vragen (wat de
+// site doet haperen), worden ze hiermee ství per stap ingeladen:
+// max. `concurrency` tegelijk, in de volgorde waarin ze worden
+// toegevoegd. `onLoaded(item)` wordt aangeroepen zodra een
+// afbeelding echt geladen is (of faalt), zodat de UI kan updaten.
+function createImageQueue(concurrency) {
+  const wachtrij = [];
+  let actief = 0;
+
+  function verwerkVolgende() {
+    while (actief < concurrency && wachtrij.length) {
+      const taak = wachtrij.shift();
+      actief++;
+      const preload = new Image();
+      const klaar = () => { actief--; verwerkVolgende(); };
+      preload.onload = () => { taak.onLoaded(true); klaar(); };
+      preload.onerror = () => { taak.onLoaded(false); klaar(); };
+      preload.src = taak.src;
+    }
+  }
+
+  return {
+    add(src, onLoaded) {
+      wachtrij.push({ src, onLoaded });
+      verwerkVolgende();
+    }
+  };
+}
+
+// ── Lazy loading van coverfoto's: pas laden als item bijna in beeld komt ──
+// Gebruikt IntersectionObserver zodat foto's pas ingeladen worden
+// wanneer de gebruiker ernaartoe scrollt (en niet allemaal meteen
+// bij het openen van de pagina). De queue zorgt dat ze rustig,
+// een voor een (met beperkte gelijktijdigheid), binnenkomen.
+function initLazyGridBackgrounds(grid) {
+  const targets = grid.querySelectorAll('.photo-item-bg.lazy-bg[data-bg]');
+  if (!targets.length) return;
+
+  const queue = createImageQueue(2);
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      obs.unobserve(el);
+      const src = el.dataset.bg;
+      if (!src) return;
+      queue.add(src, (ok) => {
+        if (ok) {
+          el.style.backgroundImage = `url('${src}')`;
+        }
+        el.classList.add('loaded');
+        el.removeAttribute('data-bg');
+      });
+    });
+  }, { root: null, rootMargin: '250px 0px', threshold: 0.01 });
+
+  targets.forEach(el => observer.observe(el));
+}
+
 // ── Render photo grids ──
 function renderGrid(containerId, projecten, sourcePage) {
   const grid = document.getElementById(containerId);
@@ -1527,12 +1613,9 @@ function renderGrid(containerId, projecten, sourcePage) {
     item.className = 'photo-item reveal';
 
     const coverSrc = p.cover ? p.cover : (p.images && p.images[0] ? p.images[0] : null);
-    const bgStyle = coverSrc
-      ? `background-image: url('${coverSrc}'); background-size: cover; background-position: center;`
-      : '';
 
     item.innerHTML = `
-      <div class="photo-item-bg ${coverSrc ? '' : p.ph}" style="${bgStyle}"></div>
+      <div class="photo-item-bg ${coverSrc ? 'lazy-bg' : p.ph}" ${coverSrc ? `data-bg="${coverSrc}"` : ''}></div>
       <div class="photo-item-overlay">
         <div class="photo-item-label">
           <h4>${p.naam}</h4>
@@ -1544,6 +1627,9 @@ function renderGrid(containerId, projecten, sourcePage) {
     grid.appendChild(item);
     setTimeout(() => item.classList.add('visible'), 100 + i * 60);
   });
+
+  // Coverfoto's pas laden zodra ze in (of net buiten) beeld scrollen
+  initLazyGridBackgrounds(grid);
 }
 
 // ── Render home projects (4 stuks, mix nieuwbouw + renovatie) ──
