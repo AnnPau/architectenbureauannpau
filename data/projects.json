@@ -35,6 +35,16 @@
       "cijfers": 2,
       "heeftMenuFoto": false,
       "home": true
+    },
+    {
+      "naam": "Nieuwbouw VD",
+      "locatie": "Zoersel",
+      "map": "images/nieuwbouw/30-VD-Zoersel",
+      "prefix": "30-VD-Zoersel",
+      "aantalFotos": 15,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
     }
   ],
 
