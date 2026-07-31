@@ -1338,7 +1338,7 @@
 <!-- ════════════ PROJECT VIEWER (inline pagina) ════════════ -->
 <div class="project-viewer" id="projectViewer">
   <div class="viewer-page-wrap">
-    <button class="viewer-back-top" id="viewerBackTop" onclick="closeViewer()">  Terug naar nieuwbouw</button>
+    <button class="viewer-back-top" id="viewerBackTop" onclick="closeViewer()"> Terug naar nieuwbouw</button>
     <h1 class="viewer-page-title" id="viewerTitle">Project</h1>
     <p class="viewer-page-loc" id="viewerLoc"></p>
     <div class="viewer-page-divider"><span></span></div>
@@ -1496,11 +1496,11 @@ function openViewer(project, sourcePage) {
   // Update terug-knop tekst
   const backBtn = document.getElementById('viewerBackTop');
   if (sourcePage === 'renovatie') {
-    backBtn.textContent = 'Terug naar renovatie';
+    backBtn.textContent = ' Terug naar renovatie';
   } else if (sourcePage === 'nieuwbouw') {
-    backBtn.textContent = 'Terug naar nieuwbouw';
+    backBtn.textContent = ' Terug naar nieuwbouw';
   } else {
-    backBtn.textContent = 'Terug naar projecten';
+    backBtn.textContent = ' Terug naar projecten';
   }
   // Reset ::before content trick - use direct text
   backBtn.style.paddingLeft = '0';
