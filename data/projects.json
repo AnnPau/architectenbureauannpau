@@ -11,10 +11,8 @@
     "  cijfers       - aantal cijfers voor de nummering: 2 = 01, 02… / 1 = 1, 2…",
     "  extensie      - bestandsextensie, standaard 'jpg' (mag weg indien 'jpg')",
     "  heeftMenuFoto - true als er een aparte '<prefix>-menu.jpg' bestaat die als menufoto",
-    "                  dient op de overzichtspagina (anders wordt 01 bijgesneden tot juiste formaat)",
-    "  home          - true om dit project ook op de homepagina te tonen",
-    "",
-
+    "                  dient op de overzichtspagina (anders wordt 01 gebruikt)",
+    "  home          - true om dit project ook op de homepagina te tonen"
   ],
 
   "nieuwbouw": [
