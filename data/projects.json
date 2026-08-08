@@ -45,6 +45,16 @@
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
+    },
+    {
+      "naam": "Nieuwbouw WL",
+      "locatie": "Nijlen",
+      "map": "images/nieuwbouw/28-WL-Nijlen",
+      "prefix": "28-WL-Nijlen",
+      "aantalFotos": 12,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
     }
   ],
 
