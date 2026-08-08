@@ -21,9 +21,9 @@
       "locatie": "Poederlee",
       "map": "images/nieuwbouw/32-D-Poederlee",
       "prefix": "32-D-Poederlee",
-      "aantalFotos": 6,
-      "cijfers": 1,
-      "heeftMenuFoto": false,
+      "aantalFotos": 7,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
       "home": true
     },
     {
