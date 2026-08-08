@@ -55,6 +55,16 @@
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
+    },
+    {
+      "naam": "Nieuwbouw FM",
+      "locatie": "Lichtaart",
+      "map": "images/nieuwbouw/26-FM-Lichtaart",
+      "prefix": "26-FM-Lichtaart",
+      "aantalFotos": 6,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
     }
   ],
 
