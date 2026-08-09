@@ -85,6 +85,16 @@
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
+    },
+    {
+      "naam": "Nieuwbouw RD",
+      "locatie": Wechelderzande",
+      "map": "images/nieuwbouw/34-RD-Wechelderzande",
+      "prefix": "34-RD-Wechelderzande",
+      "aantalFotos": 8,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
     }
   ],
 
