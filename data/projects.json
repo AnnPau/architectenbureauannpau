@@ -115,6 +115,16 @@
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
+    },
+    {
+      "naam": "Nieuwbouw WV",
+      "locatie": "Booischot",
+      "map": "images/nieuwbouw/24-WV-Booischot",
+      "prefix": "24-WV-Booischot",
+      "aantalFotos": 9,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
     }
   ],
 
