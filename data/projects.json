@@ -18,7 +18,7 @@
     {
       "naam": "Nieuwbouw D",
       "locatie": "Poederlee",
-      "map": "/images/nieuwbouw/32-D-Poederlee",
+      "map": "images/nieuwbouw/32-D-Poederlee",
       "prefix": "32-D-Poederlee",
       "aantalFotos": 7,
       "cijfers": 2,
@@ -28,7 +28,7 @@
     {
       "naam": "Nieuwbouw H",
       "locatie": "Lichtaart",
-      "map": "/images/nieuwbouw/19-H-Lichtaart",
+      "map": "images/nieuwbouw/19-H-Lichtaart",
       "prefix": "19-H-Lichtaart",
       "aantalFotos": 21,
       "cijfers": 2,
@@ -38,7 +38,7 @@
     {
       "naam": "Nieuwbouw VD",
       "locatie": "Zoersel",
-      "map": "/images/nieuwbouw/30-VD-Zoersel",
+      "map": "images/nieuwbouw/30-VD-Zoersel",
       "prefix": "30-VD-Zoersel",
       "aantalFotos": 15,
       "cijfers": 2,
@@ -48,7 +48,7 @@
     {
       "naam": "Nieuwbouw WL",
       "locatie": "Nijlen",
-      "map": "/images/nieuwbouw/28-WL-Nijlen",
+      "map": "images/nieuwbouw/28-WL-Nijlen",
       "prefix": "28-WL-Nijlen",
       "aantalFotos": 12,
       "cijfers": 2,
@@ -58,7 +58,7 @@
     {
       "naam": "Nieuwbouw FM",
       "locatie": "Lichtaart",
-      "map": "/images/nieuwbouw/26-FM-Lichtaart",
+      "map": "images/nieuwbouw/26-FM-Lichtaart",
       "prefix": "26-FM-Lichtaart",
       "aantalFotos": 6,
       "cijfers": 2,
@@ -68,7 +68,7 @@
     {
       "naam": "Nieuwbouw JG",
       "locatie": "Zoersel",
-      "map": "/images/nieuwbouw/35-JG-Zoersel",
+      "map": "images/nieuwbouw/35-JG-Zoersel",
       "prefix": "35-JG-Zoersel",
       "aantalFotos": 9,
       "cijfers": 2,
@@ -78,7 +78,7 @@
     {
       "naam": "Nieuwbouw WM",
       "locatie": "Lille",
-      "map": "/images/nieuwbouw/39-WM-Lille",
+      "map": "images/nieuwbouw/39-WM-Lille",
       "prefix": "39-WM-Lille",
       "aantalFotos": 4,
       "cijfers": 2,
@@ -88,7 +88,7 @@
     {
       "naam": "Nieuwbouw RD",
       "locatie": "Wechelderzande",
-      "map": "/images/nieuwbouw/34-RD-Wechelderzande",
+      "map": "images/nieuwbouw/34-RD-Wechelderzande",
       "prefix": "34-RD-Wechelderzande",
       "aantalFotos": 8,
       "cijfers": 2,
