@@ -95,6 +95,16 @@
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
+    },
+    {
+      "naam": "Nieuwbouw L",
+      "locatie": "Turnhout",
+      "map": "images/nieuwbouw/13-L-Turnhout",
+      "prefix": "13-L-Turnhout",
+      "aantalFotos": 16,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
     }
   ],
 
