@@ -17,16 +17,6 @@
 
   "nieuwbouw": [
     {
-      "naam": "Nieuwbouw D",
-      "locatie": "Poederlee",
-      "map": "images/nieuwbouw/32-D-Poederlee",
-      "prefix": "32-D-Poederlee",
-      "aantalFotos": 7,
-      "cijfers": 2,
-      "heeftMenuFoto": true,
-      "home": true
-    },
-    {
       "naam": "Nieuwbouw H",
       "locatie": "Lichtaart",
       "map": "images/nieuwbouw/19-H-Lichtaart",
@@ -42,6 +32,16 @@
       "map": "images/nieuwbouw/30-VD-Zoersel",
       "prefix": "30-VD-Zoersel",
       "aantalFotos": 15,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
+    },
+    {
+      "naam": "Nieuwbouw D",
+      "locatie": "Poederlee",
+      "map": "images/nieuwbouw/32-D-Poederlee",
+      "prefix": "32-D-Poederlee",
+      "aantalFotos": 7,
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
