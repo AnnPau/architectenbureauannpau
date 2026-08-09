@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nieuwbouw – Annelies Paulussen Architectenbureau</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav id="navbar">
+  <a href="/" aria-label="Home" class="logo-link">
+    <img
+      src="/images/logo.png"
+      alt="Annelies Paulussen Architectenbureau"
+      class="logo"
+      onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block'"
+    >
+    <div id="logo-text" style="display:none; cursor:pointer; font-family:'Cormorant Garamond',serif; font-size:18px; letter-spacing:1px;">
+      <span style="color:var(--accent)">annelies</span><br>
+      <span style="font-size:14px; letter-spacing:2px;">paulussen</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li>
+      <a href="/projecten.html">Projecten</a>
+      <div class="dropdown">
+        <a href="/nieuwbouw.html">Nieuwbouw</a>
+        <a href="/renovatie.html">Renovatie</a>
+      </div>
+    </li>
+    <li><a href="/bureau.html">Bureau</a></li>
+    <li><a href="/werkwijze.html">Werkwijze</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-links">
+    <a href="/" class="mn-link">Home</a>
+    <a href="/projecten.html" class="mn-link">Projecten</a>
+    <a href="/nieuwbouw.html" class="mn-sub">Nieuwbouw</a>
+    <a href="/renovatie.html" class="mn-sub">Renovatie</a>
+    <a href="/bureau.html" class="mn-link">Bureau</a>
+    <a href="/werkwijze.html" class="mn-link">Werkwijze</a>
+    <a href="/contact.html" class="mn-link">Contact</a>
+  </div>
+</nav>
+<div id="mainContent">
+<div id="nieuwbouw" class="page photo-grid-page">
+  <div class="page-header reveal">
+    <h2><em>Nieuwbouw</em></h2>
+  </div>
+  <div class="photo-grid" id="nieuwbouwGrid"></div>
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+</div>
+</div>
+<div class="project-viewer" id="projectViewer">
+  <div class="viewer-page-wrap">
+    <button class="viewer-back-top" id="viewerBackTop" onclick="closeViewer()"> Terug naar nieuwbouw</button>
+    <h1 class="viewer-page-title" id="viewerTitle">Project</h1>
+    <p class="viewer-page-loc" id="viewerLoc"></p>
+    <div class="viewer-page-divider"><span></span></div>
+
+    <div class="viewer-content-layout">
+      <div class="viewer-strip" id="viewerStrip"></div>
+
+      <div class="viewer-main-area">
+        <div class="viewer-img-wrap" id="viewerImgWrap">
+          <div class="viewer-img-placeholder" id="viewerImgPlaceholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span id="viewerPlaceholderLabel">Foto</span>
+          </div>
+          <img class="viewer-img" id="viewerImg" src="" alt="" style="display:none;">
+        </div>
+        <div class="viewer-arrows">
+          <button class="viewer-arrow-btn" onclick="viewerPrev()">← Vorige</button>
+          <span class="viewer-counter" id="viewerCounter">1 / 1</span>
+          <button class="viewer-arrow-btn" onclick="viewerNext()">Volgende →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-address">
+      Architectenbureau Annelies Paulussen bvba | Jagersdreef 11 2200 Herentals | tel. 0478696120
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+</div>
+
+<script>window.PROJECTS_PAGE = true;</script>
+<script src="/data/data-loader.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/projects.js"></script>
+</body>
+</html>
