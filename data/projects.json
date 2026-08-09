@@ -66,6 +66,26 @@
       "heeftMenuFoto": true,
       "home": true
     }
+    {
+      "naam": "Nieuwbouw JG",
+      "locatie": "Zoersel",
+      "map": "images/nieuwbouw/35-JG-Zoersel",
+      "prefix": "35-JG-Zoersel",
+      "aantalFotos": 9,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
+    }
+    {
+      "naam": "Nieuwbouw WM",
+      "locatie": "Lille",
+      "map": "images/nieuwbouw/39-WM-Lille",
+      "prefix": "39-WM-Lille",
+      "aantalFotos": 4,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
+    }
   ],
 
   "renovatie": [
