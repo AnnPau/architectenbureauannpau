@@ -105,6 +105,16 @@
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
+    },
+    {
+      "naam": "Nieuwbouw DV",
+      "locatie": "Beerse",
+      "map": "images/nieuwbouw/29-DV-Beerse",
+      "prefix": "29-DV-Beerse",
+      "aantalFotos": 9,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
     }
   ],
 
