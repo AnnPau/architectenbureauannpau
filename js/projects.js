@@ -299,7 +299,7 @@ document.addEventListener('keydown', e => {
 // ── Init: data inladen, en enkel renderen wat op déze pagina nodig is ──
 (async function initProjectsData() {
   try {
-    const projecten = await laadEnBouwProjecten('/.data/projects.json');
+    const projecten = await laadEnBouwProjecten('data/projects.json');
     nieuwbouwProjecten = projecten.nieuwbouw;
     renovatieProjecten = projecten.renovatie;
   } catch (err) {
