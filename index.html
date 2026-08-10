@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Annelies Paulussen – Architectenbureau bvba</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <nav id="navbar">
   <a href="/" aria-label="Home" class="logo-link">
     <img
-      src="/images/logo.png"
+      src="images/logo.png"
       alt="Annelies Paulussen Architectenbureau"
       class="logo"
       onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block'"
@@ -27,13 +27,13 @@
     <li>
       <a href="/projecten.html">Projecten</a>
       <div class="dropdown">
-        <a href="/nieuwbouw.html">Nieuwbouw</a>
-        <a href="/renovatie.html">Renovatie</a>
+        <a href="nieuwbouw.html">Nieuwbouw</a>
+        <a href="renovatie.html">Renovatie</a>
       </div>
     </li>
-    <li><a href="/bureau.html">Bureau</a></li>
-    <li><a href="/werkwijze.html">Werkwijze</a></li>
-    <li><a href="/contact.html">Contact</a></li>
+    <li><a href="bureau.html">Bureau</a></li>
+    <li><a href="werkwijze.html">Werkwijze</a></li>
+    <li><a href="contact.html">Contact</a></li>
   </ul>
 
   <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
@@ -44,13 +44,13 @@
 <div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="closeMobileNav()"></div>
 <nav class="mobile-nav" id="mobileNav">
   <div class="mobile-nav-links">
-    <a href="/" class="mn-link">Home</a>
-    <a href="/projecten.html" class="mn-link">Projecten</a>
-    <a href="/nieuwbouw.html" class="mn-sub">Nieuwbouw</a>
-    <a href="/renovatie.html" class="mn-sub">Renovatie</a>
-    <a href="/bureau.html" class="mn-link">Bureau</a>
-    <a href="/werkwijze.html" class="mn-link">Werkwijze</a>
-    <a href="/contact.html" class="mn-link">Contact</a>
+    <a href="index.html" class="mn-link">Home</a>
+    <a href="projecten.html" class="mn-link">Projecten</a>
+    <a href="nieuwbouw.html" class="mn-sub">Nieuwbouw</a>
+    <a href="renovatie.html" class="mn-sub">Renovatie</a>
+    <a href="bureau.html" class="mn-link">Bureau</a>
+    <a href="werkwijze.html" class="mn-link">Werkwijze</a>
+    <a href="contact.html" class="mn-link">Contact</a>
   </div>
 </nav>
 <div id="mainContent">
@@ -58,7 +58,7 @@
   <div class="home-intro">
     <div class="home-row reveal">
       <div class="home-row-img">
-        <img src="/images/nieuwbouw/MAPNAAM/MAPNAAM-1.jpg" alt="Architectuur Annelies Paulussen"
+        <img src="images/nieuwbouw/MAPNAAM/MAPNAAM-1.jpg" alt="Architectuur Annelies Paulussen"
              onerror="this.parentNode.classList.add('ph-1')">
       </div>
       <div class="home-row-text">
@@ -74,7 +74,7 @@
   <div class="home-intro">
     <div class="home-row reverse reveal">
       <div class="home-row-img">
-        <img src="/images/nieuwbouw/MAPNAAM/MAPNAAM-1.jpg" alt="Nieuwbouw en renovatie"
+        <img src="images/nieuwbouw/MAPNAAM/MAPNAAM-1.jpg" alt="Nieuwbouw en renovatie"
              onerror="this.parentNode.classList.add('ph-1')">
       </div>
       <div class="home-row-text">
@@ -93,7 +93,7 @@
       <!-- Dynamisch ingevuld -->
     </div>
     <div class="home-meer-btn">
-      <a href="/projecten.html">Meer projecten</a>
+      <a href="projecten.html">Meer projecten</a>
     </div>
   </div>
 
@@ -179,8 +179,8 @@
   const VIEWER_RETURN_URL = { nieuwbouw: '/nieuwbouw.html', renovatie: '/renovatie.html' };
   window.PROJECTS_PAGE = true;
 </script>
-<script src="/data/data-loader.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/projects.js"></script>
+<script src="data/data-loader.js"></script>
+<script src="js/main.js"></script>
+<script src="js/projects.js"></script>
 </body>
 </html>
