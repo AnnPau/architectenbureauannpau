@@ -11,6 +11,17 @@
    - "-menu"    = de foto die op de overzichtspagina (nieuwbouw/renovatie en op de homepagina) als menufoto getoond wordt.
                   Als er op geklikt wordt, opent de fotoviewer bij foto 01, 02, 03… in volgorde.
 
+   BELANGRIJK over paden:
+   De paden in projects.json (het "map"-veld, bv. "images/nieuwbouw/32-D-Poederlee")
+   zijn geschreven t.o.v. de site-root. Dat werkt vanzelf correct op de
+   homepage (die ook in de root staat), maar NIET op pagina's die zelf in
+   een submap staan (bv. /nieuwbouw/ of /renovatie/) — daar moet elk pad
+   eerst "terug naar boven" wijzen (../).
+   Om dat automatisch juist te laten lopen, wordt hier hetzelfde
+   voorvoegsel gebruikt als waarmee projects.json zelf werd ingeladen
+   (zie window.PROJECTS_DATA_PATH, ingesteld per pagina): werd
+   projects.json bv. ingeladen via "../data/projects.json", dan krijgen
+   alle fotopaden ook automatisch "../" vooraan.
    ============================================================ */
 
 async function laadEnBouwProjecten(pad) {
@@ -20,13 +31,18 @@ async function laadEnBouwProjecten(pad) {
   }
   const data = await respons.json();
 
+  // Voorvoegsel om terug naar de site-root te wijzen, afgeleid uit het
+  // pad waarmee projects.json zelf werd ingeladen (zie hierboven).
+  const basis = pad.replace(/data\/projects\.json.*$/, '');
+
   return {
-    nieuwbouw: bouwProjectenArray(data.nieuwbouw),
-    renovatie: bouwProjectenArray(data.renovatie)
+    nieuwbouw: bouwProjectenArray(data.nieuwbouw, basis),
+    renovatie: bouwProjectenArray(data.renovatie, basis)
   };
 }
 
-function bouwProjectenArray(projectenLijst) {
+function bouwProjectenArray(projectenLijst, basis) {
+  basis = basis || '';
   return (projectenLijst || []).map(function (p) {
     const extensie = p.extensie || 'jpg';
     const cijfers = (p.cijfers !== undefined) ? p.cijfers : 2;
@@ -37,14 +53,14 @@ function bouwProjectenArray(projectenLijst) {
     const images = [];
     for (let n = startNummer; n < startNummer + aantalFotos; n++) {
       const nummer = String(n).padStart(cijfers, '0');
-      images.push(p.map + '/' + p.prefix + '-' + nummer + '.' + extensie);
+      images.push(basis + p.map + '/' + p.prefix + '-' + nummer + '.' + extensie);
     }
 
     // De coverfoto (miniatuur op overzichtspagina's):
     // - als heeftMenuFoto true is: de aparte "-menu" foto
     // - anders: gewoon de eerste foto van de reeks
     const cover = p.heeftMenuFoto
-      ? (p.map + '/' + p.prefix + '-menu.' + extensie)
+      ? (basis + p.map + '/' + p.prefix + '-menu.' + extensie)
       : images[0];
 
     return {
