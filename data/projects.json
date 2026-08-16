@@ -16,11 +16,11 @@
   ],
   "nieuwbouw": [
     {
-      "naam": "Nieuwbouw D",
-      "locatie": "Poederlee",
-      "map": "images/nieuwbouw/32-D-Poederlee",
-      "prefix": "32-D-Poederlee",
-      "aantalFotos": 7,
+      "naam": "Nieuwbouw VD",
+      "locatie": "Zoersel",
+      "map": "images/nieuwbouw/30-VD-Zoersel",
+      "prefix": "30-VD-Zoersel",
+      "aantalFotos": 15,
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
@@ -36,11 +36,11 @@
       "home": true
     },
     {
-      "naam": "Nieuwbouw VD",
-      "locatie": "Zoersel",
-      "map": "images/nieuwbouw/30-VD-Zoersel",
-      "prefix": "30-VD-Zoersel",
-      "aantalFotos": 15,
+      "naam": "Nieuwbouw D",
+      "locatie": "Poederlee",
+      "map": "images/nieuwbouw/32-D-Poederlee",
+      "prefix": "32-D-Poederlee",
+      "aantalFotos": 7,
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
@@ -91,6 +91,46 @@
       "map": "images/nieuwbouw/34-RD-Wechelderzande",
       "prefix": "34-RD-Wechelderzande",
       "aantalFotos": 8,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
+    },
+    {
+      "naam": "Nieuwbouw L",
+      "locatie": "Turnhout",
+      "map": "images/nieuwbouw/13-L-Turnhout",
+      "prefix": "13-L-Turnhout",
+      "aantalFotos": 16,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
+    },
+    {
+      "naam": "Nieuwbouw T",
+      "locatie": "Beerse",
+      "map": "images/nieuwbouw/23-T-Beerse",
+      "prefix": "23-T-Beerse",
+      "aantalFotos": 7,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
+    },
+    {
+      "naam": "Nieuwbouw WV",
+      "locatie": "Booischot",
+      "map": "images/nieuwbouw/24-WV-Booischot",
+      "prefix": "24-WV-Booischot",
+      "aantalFotos": 4,
+      "cijfers": 2,
+      "heeftMenuFoto": true,
+      "home": true
+    },
+    {
+      "naam": "Nieuwbouw DV",
+      "locatie": "Beerse",
+      "map": "images/nieuwbouw/29-DV-Beerse",
+      "prefix": "29-DV-Beerse",
+      "aantalFotos": 9,
       "cijfers": 2,
       "heeftMenuFoto": true,
       "home": true
