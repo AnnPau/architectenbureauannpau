@@ -24,18 +24,26 @@ let currentProject = null;
 let currentPhotoIndex = 0;
 let viewerSourcePage = 'nieuwbouw';
 
-// ── Rustige, op volgorde ladende image-queue ──────────────────
+// ── Rustige, met prioriteit ladende image-queue ──────────────────
 // In plaats van alle afbeeldingen tegelijk aan te vragen (wat de
-// site doet haperen), worden ze hiermee ství per stap ingeladen:
-// max. `concurrency` tegelijk, in de volgorde waarin ze worden
-// toegevoegd. `onLoaded(item)` wordt aangeroepen zodra een
-// afbeelding echt geladen is (of faalt), zodat de UI kan updaten.
+// site doet haperen), worden ze hiermee stap voor stap ingeladen:
+// max. `concurrency` tegelijk. Elke taak krijgt een `priority` mee
+// (hoe lager het getal, hoe hoger op de pagina / hoe eerder gewenst).
+// Zo wordt, ook als er toevallig meerdere afbeeldingen tegelijk
+// "klaar om te laden" zijn (bv. net na het openen van de pagina, of
+// bij snel scrollen), altijd eerst de afbeelding bovenaan geladen en
+// pas daarna wat eronder staat — nooit omgekeerd.
+// `onLoaded(ok)` wordt aangeroepen zodra een afbeelding echt geladen
+// is (of faalt), zodat de UI kan updaten.
 function createImageQueue(concurrency) {
   const wachtrij = [];
   let actief = 0;
 
   function verwerkVolgende() {
     while (actief < concurrency && wachtrij.length) {
+      // Altijd de taak met de hoogste prioriteit (= laagste getal,
+      // dus hoogst op de pagina) als eerste verwerken.
+      wachtrij.sort((a, b) => a.priority - b.priority);
       const taak = wachtrij.shift();
       actief++;
       const preload = new Image();
@@ -47,38 +55,71 @@ function createImageQueue(concurrency) {
   }
 
   return {
-    add(src, onLoaded) {
-      wachtrij.push({ src, onLoaded });
+    add(src, onLoaded, priority) {
+      wachtrij.push({ src, onLoaded, priority: priority || 0 });
       verwerkVolgende();
     }
   };
 }
 
-// ── Lazy loading van coverfoto's: pas laden als item bijna in beeld komt ──
-function initLazyGridBackgrounds(grid) {
-  const targets = grid.querySelectorAll('.photo-item-bg.lazy-bg[data-bg]');
-  if (!targets.length) return;
+// ── Generieke lazy-load helper op basis van paginavolgorde ──────
+// `elements` moet in DOM-volgorde (dus van boven naar onder op de
+// pagina) doorgegeven worden: die volgorde bepaalt de prioriteit.
+// Een element wordt pas geladen wanneer het (bijna) in beeld komt
+// (IntersectionObserver, met wat marge zodat het net op tijd klaar
+// is). Komen er door snel scrollen meerdere elementen tegelijk in
+// aanmerking, dan zorgt de prioriteitswachtrij hierboven ervoor dat
+// het element dat het hoogst op de pagina staat altijd als eerste
+// geladen wordt — de foto's die de gebruiker als laatste ziet,
+// worden dus ook effectief als laatste ingeladen.
+function initLazyLoad(elements, getSrc, onLoaded, concurrency) {
+  const lijst = Array.prototype.slice.call(elements).filter(Boolean);
+  if (!lijst.length) return;
 
-  const queue = createImageQueue(2);
+  const queue = createImageQueue(concurrency || 4);
 
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       const el = entry.target;
       obs.unobserve(el);
-      const src = el.dataset.bg;
+      const src = getSrc(el);
       if (!src) return;
-      queue.add(src, (ok) => {
-        if (ok) {
-          el.style.backgroundImage = `url('${src}')`;
-        }
-        el.classList.add('loaded');
-        el.removeAttribute('data-bg');
-      });
+      const priority = lijst.indexOf(el);
+      queue.add(src, (ok) => onLoaded(el, src, ok), priority);
     });
   }, { root: null, rootMargin: '250px 0px', threshold: 0.01 });
 
-  targets.forEach(el => observer.observe(el));
+  lijst.forEach(el => observer.observe(el));
+}
+
+// ── Lazy loading van coverfoto's in de foto-grids (nieuwbouw/renovatie) ──
+function initLazyGridBackgrounds(grid) {
+  const targets = grid.querySelectorAll('.photo-item-bg.lazy-bg[data-bg]');
+  initLazyLoad(
+    targets,
+    (el) => el.dataset.bg,
+    (el, src, ok) => {
+      if (ok) {
+        el.style.backgroundImage = `url('${src}')`;
+      }
+      el.classList.add('loaded');
+      el.removeAttribute('data-bg');
+    }
+  );
+}
+
+// ── Lazy loading van coverfoto's op de homepagina (zelfde principe) ──
+function initLazyGridImages(imgs) {
+  initLazyLoad(
+    imgs,
+    (el) => el.dataset.src,
+    (el, src, ok) => {
+      if (ok) el.src = src;
+      el.classList.add('loaded');
+      el.removeAttribute('data-src');
+    }
+  );
 }
 
 // ── Render photo grids ──
@@ -105,7 +146,8 @@ function renderGrid(containerId, projecten, sourcePage) {
     setTimeout(() => item.classList.add('visible'), 100 + i * 60);
   });
 
-  // Coverfoto's pas laden zodra ze in (of net buiten) beeld scrollen
+  // Coverfoto's pas laden zodra ze in (of net buiten) beeld scrollen,
+  // altijd strikt van boven naar onder.
   initLazyGridBackgrounds(grid);
 }
 
@@ -115,6 +157,7 @@ function renderHomeProjects() {
   if (!grid) return;
   grid.innerHTML = '';
   const selection = [...nieuwbouwProjecten, ...renovatieProjecten].filter(p => p.home === true);
+  const lazyImgs = [];
   selection.forEach((p, i) => {
     const sourcePage = nieuwbouwProjecten.includes(p) ? 'nieuwbouw' : 'renovatie';
     const card = document.createElement('div');
@@ -123,7 +166,7 @@ function renderHomeProjects() {
     card.innerHTML = `
       <div class="home-project-card-img">
         ${coverSrc
-          ? `<img src="${coverSrc}" alt="${p.naam}" loading="lazy" onerror="this.parentNode.style.background='#ddd'">`
+          ? `<img class="lazy-img" alt="${p.naam}" data-src="${coverSrc}" onerror="this.parentNode.style.background='#ddd'">`
           : `<div style="width:100%;height:100%;background:var(--grey);display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;">${p.naam}</div>`
         }
       </div>
@@ -134,8 +177,12 @@ function renderHomeProjects() {
     `;
     card.addEventListener('click', () => openViewer(p, sourcePage));
     grid.appendChild(card);
+    if (coverSrc) lazyImgs.push(card.querySelector('.lazy-img'));
     setTimeout(() => card.classList.add('visible'), 100 + i * 80);
   });
+
+  // Ook hier: coverfoto's pas laden bij het in beeld komen, van boven naar onder.
+  initLazyGridImages(lazyImgs);
 }
 
 // ── Build thumbnail strip ──
