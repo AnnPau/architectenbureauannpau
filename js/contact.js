@@ -5,9 +5,10 @@
 async function submitForm() {
   const naam = document.getElementById('cNaam').value.trim();
   const email = document.getElementById('cEmail').value.trim();
+  const telefoonnummer = document.getElementById('cTelefoonnummer').value.trim();
   const onderwerp = document.getElementById('cOnderwerp').value.trim();
-  if (!naam || !email) {
-    alert('Vul minstens uw naam en e-mailadres in.');
+  if (!naam || !email || !telefoonnummer) {
+    alert('Vul minstens uw naam, e-mailadres en telefoonnummer in.');
     return;
   }
   const btn = document.querySelector('.submit-btn');
@@ -17,7 +18,7 @@ async function submitForm() {
     const res = await fetch('https://formspree.io/f/xeebvyvk', {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ naam, email, onderwerp })
+      body: JSON.stringify({ naam, email, telefoonnummer, onderwerp })
     });
     if (res.ok) {
       document.getElementById('contactFormWrap').style.display = 'none';
