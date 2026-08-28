@@ -245,7 +245,7 @@
     line-height: 1.2;
     margin-bottom: 20px;
   }
-  .home-row-text h2 em { color: var(--accent); font-style: italic; }
+  .home-row-text h2 em { color: var(--black); }
   .home-row-text p {
     font-size: 14px;
     line-height: 1.9;
@@ -278,7 +278,7 @@
     text-align: center;
     margin-bottom: 40px;
   }
-  .home-projects-title em { color: var(--accent); font-style: italic; }
+  .home-projects-title em { color: var(--black); }
 
   .home-projects-grid {
     display: grid;
@@ -754,7 +754,7 @@
     margin-bottom: 40px;
     line-height: 1.1;
   }
-  .bureau-text h2 em { color: var(--accent); font-style: italic; }
+  .bureau-text h2 em { color: var(--dark); }
   .bureau-text p {
     font-size: 14px;
     line-height: 1.9;
@@ -825,7 +825,7 @@
     margin-bottom: 50px;
     line-height: 1.1;
   }
-  .contact-info h2 em { color: var(--accent); font-style: italic; }
+  .contact-info h2 em { color: var(--dark); }
   .contact-detail { margin-bottom: 36px; }
   .contact-detail h4 {
     font-size: 10px;
