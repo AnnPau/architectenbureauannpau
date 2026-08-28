@@ -239,7 +239,7 @@
     padding: 20px 0;
   }
   .home-row-text h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 38px;
     font-weight: 300;
     line-height: 1.2;
@@ -272,7 +272,7 @@
     background: var(--white);
   }
   .home-projects-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 42px;
     font-weight: 300;
     text-align: center;
@@ -312,7 +312,7 @@
     padding: 14px 0 4px;
   }
   .home-project-card-label h4 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 2px;
@@ -359,7 +359,7 @@
     text-align: center;
   }
   .page-header h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 52px;
     font-weight: 300;
     letter-spacing: -1px;
@@ -435,7 +435,7 @@
     z-index: 2;
   }
   .project-category-label h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 36px;
     font-weight: 300;
   }
@@ -524,7 +524,7 @@
   }
   .photo-item:hover .photo-item-label { opacity: 1; transform: translateY(0); }
   .photo-item-label h4 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     font-weight: 400;
   }
@@ -584,7 +584,7 @@
   .viewer-back-top::before { content: '←'; font-size: 14px; margin-right: 2px; }
 
   .viewer-page-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 46px;
     font-weight: 300;
     text-align: center;
@@ -748,7 +748,7 @@
     border-right: 1px solid var(--grey-mid);
   }
   .bureau-text h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 48px;
     font-weight: 300;
     margin-bottom: 40px;
@@ -762,7 +762,7 @@
     margin-bottom: 24px;
   }
   .bureau-text .lead {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 22px;
     font-weight: 300;
     color: var(--black);
@@ -819,7 +819,7 @@
     background: var(--grey);
   }
   .contact-info h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 48px;
     font-weight: 300;
     margin-bottom: 50px;
@@ -845,7 +845,7 @@
   .contact-detail a:hover { color: var(--accent); }
   .contact-form-wrap { padding: 80px 60px; }
   .contact-form-wrap h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 32px;
     font-weight: 300;
     margin-bottom: 40px;
@@ -943,7 +943,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     font-weight: 400;
     color: var(--accent-dark);
@@ -952,7 +952,7 @@
   }
   .werkwijze-step-content { padding-top: 8px; }
   .werkwijze-step-content h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 26px;
     font-weight: 400;
     margin-bottom: 10px;
@@ -1010,7 +1010,7 @@
   .form-success { display: none; text-align: center; padding: 40px; }
   .form-success.show { display: block; }
   .form-success h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 32px;
     color: var(--accent);
     margin-bottom: 12px;
