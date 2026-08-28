@@ -7,8 +7,8 @@ async function submitForm() {
   const email = document.getElementById('cEmail').value.trim();
   const telefoonnummer = document.getElementById('cTelefoonnummer').value.trim();
   const onderwerp = document.getElementById('cOnderwerp').value.trim();
-  if (!naam || !email || !telefoonnummer) {
-    alert('Vul minstens uw naam, e-mailadres en telefoonnummer in.');
+  if (!naam || !email || !onderwerp) {
+    alert('Vul minstens uw naam, e-mailadres en onderwerp in.');
     return;
   }
   const btn = document.querySelector('.submit-btn');
