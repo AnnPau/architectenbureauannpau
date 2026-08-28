@@ -73,7 +73,7 @@
       "aantalFotos": 9,
       "cijfers": 2,
       "heeftMenuFoto": true,
-      "home": true
+      "home": false
     },
     {
       "naam": "Nieuwbouw WM",
@@ -83,7 +83,7 @@
       "aantalFotos": 4,
       "cijfers": 2,
       "heeftMenuFoto": true,
-      "home": true
+      "home": false
     },
     {
       "naam": "Nieuwbouw RD",
@@ -93,7 +93,7 @@
       "aantalFotos": 8,
       "cijfers": 2,
       "heeftMenuFoto": true,
-      "home": true
+      "home": false
     },
     {
       "naam": "Nieuwbouw L",
@@ -113,7 +113,7 @@
       "aantalFotos": 7,
       "cijfers": 2,
       "heeftMenuFoto": true,
-      "home": true
+      "home": false
     },
     {
       "naam": "Nieuwbouw WV",
@@ -123,7 +123,7 @@
       "aantalFotos": 4,
       "cijfers": 2,
       "heeftMenuFoto": true,
-      "home": true
+      "home": false
     },
     {
       "naam": "Nieuwbouw DV",
@@ -133,7 +133,7 @@
       "aantalFotos": 9,
       "cijfers": 2,
       "heeftMenuFoto": true,
-      "home": true
+      "home": false
     }
   ],
   "renovatie": [
@@ -145,7 +145,7 @@
       "aantalFotos": 13,
       "cijfers": 2,
       "heeftMenuFoto": true,
-      "home": true
+      "home": false
     }
   ]
 }
