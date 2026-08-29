@@ -364,7 +364,7 @@
     font-weight: 300;
     letter-spacing: -1px;
   }
-  .page-header h2 span { color: var(--accent); font-style: italic; }
+  .page-header h2 span { color: var(--accent); }
 
   /* Projecten pagina: 2 foto's naast elkaar met witte strook */
   .projects-overview {
